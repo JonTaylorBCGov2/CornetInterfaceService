@@ -21,22 +21,33 @@ namespace CASInterfaceService.Pages.Controllers
             CASAPTransactionRegistrationReply casregreply = new CASAPTransactionRegistrationReply();
             CASAPTransactionRegistration.getInstance().Add(casAPTransaction);
             casregreply.RegistrationStatus = "Success";
+
+            // Now we must call CAS with this data
+            CASAPTransactionRegistration.getInstance().sendTransactionsToCAS(casAPTransaction);
+
             return casregreply;
         }
 
         [HttpPost("InsertCASAPTransaction")]
         public IActionResult InsertCASAPTransaction(CASAPTransaction casAPTransaction)
         {
-            Console.WriteLine("In InsertCASAPTransaction");
-            CASAPTransactionRegistrationReply casregreply = new CASAPTransactionRegistrationReply();
-            CASAPTransactionRegistration.getInstance().Add(casAPTransaction);
-            casregreply.RegistrationStatus = "Success";
+            try
+            {
+                Console.WriteLine("In InsertCASAPTransaction");
+                CASAPTransactionRegistrationReply casregreply = new CASAPTransactionRegistrationReply();
+                CASAPTransactionRegistration.getInstance().Add(casAPTransaction);
+                casregreply.RegistrationStatus = "Success";
 
-            CASAPTransactionRegistration.getInstance().sendTransactionsToCAS(casAPTransaction);
-            // Now we must call CAS with this data
-            //CallCAS();
+                // Now we must call CAS with this data
+                CASAPTransactionRegistration.getInstance().sendTransactionsToCAS(casAPTransaction);
 
-            return Ok(casregreply);
+                return Ok(casregreply);
+            }
+            catch(Exception e)
+            {
+                
+                return StatusCode(e.HResult);
+            }
 
         }
         //// POST: api/<controller>
