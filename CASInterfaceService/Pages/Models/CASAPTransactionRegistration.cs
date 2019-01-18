@@ -85,6 +85,8 @@ namespace CASInterfaceService.Pages.Models
         {
             try
             {
+                Console.WriteLine("Starting sendTransactionsToCAS.");
+
                 // Send current data in memory to CAS
                 HttpClient client = new HttpClient();
                 client.BaseAddress = new Uri(URL);
@@ -99,6 +101,7 @@ namespace CASInterfaceService.Pages.Models
             }
             catch (Exception e)
             {
+                Console.WriteLine("Error in sendTransactionsToCAS. " + e.ToString());
                 throw e;
             }
         }

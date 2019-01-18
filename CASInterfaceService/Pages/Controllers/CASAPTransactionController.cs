@@ -45,7 +45,7 @@ namespace CASInterfaceService.Pages.Controllers
             }
             catch(Exception e)
             {
-                
+                Console.WriteLine("Error in InsertCASAPTransaction. " + e.ToString());
                 return StatusCode(e.HResult);
             }
 
