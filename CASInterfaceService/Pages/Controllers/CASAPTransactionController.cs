@@ -21,7 +21,7 @@ namespace CASInterfaceService.Pages.Controllers
 
             Console.WriteLine("Start TEST");
             HttpWebRequest HttpWReq =
-            (HttpWebRequest)WebRequest.Create("https://molson.cas.gov.bc.ca:7015/ords/cas/cfs/apinvoice/");
+            (HttpWebRequest)WebRequest.Create("http://142.34.166.75:7015");//https://molson.cas.gov.bc.ca:7015/ords/cas/cfs/apinvoice/");
 
             HttpWebResponse HttpWResp = (HttpWebResponse)HttpWReq.GetResponse();
             // Insert code that uses the response object.
@@ -49,7 +49,7 @@ namespace CASInterfaceService.Pages.Controllers
             {
                 Console.WriteLine("Start TEST");
                 HttpWebRequest HttpWReq =
-                (HttpWebRequest)WebRequest.Create("https://molson.cas.gov.bc.ca:7015/ords/cas/cfs/apinvoice/");
+                (HttpWebRequest)WebRequest.Create("https://142.34.166.75:7015");// ords/cas/cfs/apinvoice/");
 
                 HttpWebResponse HttpWResp = (HttpWebResponse)HttpWReq.GetResponse();
                 // Insert code that uses the response object.
