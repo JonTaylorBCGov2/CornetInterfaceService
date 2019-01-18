@@ -83,12 +83,14 @@ namespace CASInterfaceService.Pages.Models
 
         public async void sendTransactionsToCAS(CASAPTransaction casapTransaction)
         {
+            HttpClient client = new HttpClient();
+
             try
             {
                 Console.WriteLine("Starting sendTransactionsToCAS.");
 
                 // Send current data in memory to CAS
-                HttpClient client = new HttpClient();
+                //HttpClient client = new HttpClient();
                 client.BaseAddress = new Uri(URL);
 
                 // Add an Accept header for JSON format.
@@ -101,7 +103,8 @@ namespace CASInterfaceService.Pages.Models
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error in sendTransactionsToCAS. " + e.ToString());
+                var errorContent = new StringContent(casapTransaction.ToString(), Encoding.UTF8, "application/json");
+                Console.WriteLine("Error in sendTransactionsToCAS. " + client.BaseAddress.ToString() + errorContent + client + e.ToString());
                 throw e;
             }
         }
