@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -20,7 +21,8 @@ namespace CASInterfaceService.Pages.Models
         //private const string URL = "https://<server>:<port>ords/cas/cfs/apinvoice/";
         private const string URL = "https://molson.cas.gov.bc.ca:7015/ords/cas/cfs/apinvoice/";
         //private const string TokenURL = "https://<server>:<port>/ords/casords/oauth/token";
-        private const string TokenURL = "https://molson.cas.gov.bc.ca:7015/ords/casords/oauth/token";
+        //private const string TokenURL = "https://molson.cas.gov.bc.ca:7015/ords/casords/oauth/token";
+        private const string TokenURL = "https://wsgw.test.jag.gov.bc.ca/ords/casords/oauth/token";
 
         private CASAPTransactionRegistration()
         {
@@ -89,6 +91,19 @@ namespace CASInterfaceService.Pages.Models
             {
                 Console.WriteLine("Starting sendTransactionsToCAS.");
 
+
+                Console.WriteLine("Start TEST");
+                HttpWebRequest HttpWReq =
+                (HttpWebRequest)WebRequest.Create(TokenURL);
+
+                HttpWebResponse HttpWResp = (HttpWebResponse)HttpWReq.GetResponse();
+                // Insert code that uses the response object.
+                Console.WriteLine(HttpWResp.StatusCode.ToString());
+                Console.WriteLine(HttpWResp.StatusDescription.ToString());
+                HttpWResp.Close();
+                Console.WriteLine("End TEST");
+
+
                 // Send current data in memory to CAS
                 //HttpClient client = new HttpClient();
                 client.BaseAddress = new Uri(URL);
@@ -96,6 +111,7 @@ namespace CASInterfaceService.Pages.Models
                 // Add an Accept header for JSON format.
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TokenURL);
+                
 
                 // Send content to CAS
                 var content = new StringContent(casapTransaction.ToString(), Encoding.UTF8, "application/json");
