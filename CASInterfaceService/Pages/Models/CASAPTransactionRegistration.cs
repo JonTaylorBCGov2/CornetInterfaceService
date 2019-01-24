@@ -24,6 +24,8 @@ namespace CASInterfaceService.Pages.Models
         //private const string TokenURL = "https://<server>:<port>/ords/casords/oauth/token";
         //private const string TokenURL = "https://molson.cas.gov.bc.ca:7015/ords/casords/oauth/token";
         private const string TokenURL = "https://wsgw.test.jag.gov.bc.ca/ords/casords/oauth/token";
+        private const string clientID = "123";
+        private const string secret = "456";
 
         private CASAPTransactionRegistration()
         {
@@ -92,16 +94,27 @@ namespace CASInterfaceService.Pages.Models
             {
                 Console.WriteLine("Starting sendTransactionsToCAS.");
 
-
                 Console.WriteLine("Start GetToken");
                 var restClient = new RestClient(TokenURL);
                 var request = new RestRequest(Method.POST);
                 request.AddHeader("cache-control", "no-cache");
                 request.AddHeader("content-type", "application/x-www-form-urlencoded");
-                request.AddParameter("application/x-www-form-urlencoded", "grant_type=client_credentials&client_id=abc&client_secret=123", ParameterType.RequestBody);
+                request.AddParameter("application/x-www-form-urlencoded", "grant_type=client_credentials&client_id=" + clientID + "&client_secret=" + secret, ParameterType.RequestBody);
                 IRestResponse response = restClient.Execute(request);
+                Console.WriteLine("Token: " + response.ToString());
                 Console.WriteLine("End GetToken");
 
+
+
+                Console.WriteLine("Start GetResponse");
+                var restResponse = new RestClient(URL);
+                var requestResponse = new RestRequest(Method.POST);
+                request.AddHeader("cache-control", "no-cache");
+                request.AddHeader("content-type", "application/x-www-form-urlencoded");
+                request.AddParameter("application/x-www-form-urlencoded", "grant_type=client_credentials&token=" + response, ParameterType.RequestBody);
+                IRestResponse responseValue = restClient.Execute(request);
+                Console.WriteLine("Response: " + responseValue.ToString());
+                Console.WriteLine("Start GetResponse");
 
                 //Console.WriteLine("Start TEST");
                 //HttpWebRequest HttpWReq =
