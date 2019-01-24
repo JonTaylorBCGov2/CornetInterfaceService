@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -92,16 +93,26 @@ namespace CASInterfaceService.Pages.Models
                 Console.WriteLine("Starting sendTransactionsToCAS.");
 
 
-                Console.WriteLine("Start TEST");
-                HttpWebRequest HttpWReq =
-                (HttpWebRequest)WebRequest.Create(TokenURL);
+                Console.WriteLine("Start GetToken");
+                var restClient = new RestClient(TokenURL);
+                var request = new RestRequest(Method.POST);
+                request.AddHeader("cache-control", "no-cache");
+                request.AddHeader("content-type", "application/x-www-form-urlencoded");
+                request.AddParameter("application/x-www-form-urlencoded", "grant_type=client_credentials&client_id=abc&client_secret=123", ParameterType.RequestBody);
+                IRestResponse response = restClient.Execute(request);
+                Console.WriteLine("End GetToken");
 
-                HttpWebResponse HttpWResp = (HttpWebResponse)HttpWReq.GetResponse();
-                // Insert code that uses the response object.
-                Console.WriteLine(HttpWResp.StatusCode.ToString());
-                Console.WriteLine(HttpWResp.StatusDescription.ToString());
-                HttpWResp.Close();
-                Console.WriteLine("End TEST");
+
+                //Console.WriteLine("Start TEST");
+                //HttpWebRequest HttpWReq =
+                //(HttpWebRequest)WebRequest.Create(TokenURL);
+
+                //HttpWebResponse HttpWResp = (HttpWebResponse)HttpWReq.GetResponse();
+                //// Insert code that uses the response object.
+                //Console.WriteLine(HttpWResp.StatusCode.ToString());
+                //Console.WriteLine(HttpWResp.StatusDescription.ToString());
+                //HttpWResp.Close();
+                //Console.WriteLine("End TEST");
 
 
                 // Send current data in memory to CAS
@@ -115,7 +126,7 @@ namespace CASInterfaceService.Pages.Models
 
                 // Send content to CAS
                 var content = new StringContent(casapTransaction.ToString(), Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync(client.BaseAddress.ToString(), content);
+                HttpResponseMessage responseX = await client.PostAsync(client.BaseAddress.ToString(), content);
             }
             catch (Exception e)
             {
