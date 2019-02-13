@@ -1,4 +1,6 @@
-﻿using RestSharp;
+﻿using Microsoft.AspNetCore.Authentication.Twitter;
+using Newtonsoft.Json;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,8 +26,8 @@ namespace CASInterfaceService.Pages.Models
         //private const string TokenURL = "https://<server>:<port>/ords/casords/oauth/token";
         //private const string TokenURL = "https://molson.cas.gov.bc.ca:7015/ords/casords/oauth/token";
         private const string TokenURL = "https://wsgw.test.jag.gov.bc.ca/ords/casords/oauth/token";
-        private const string clientID = "123";
-        private const string secret = "456";
+        private const string clientID = "cybkCJ8PobmEvr3rkpnkeA..";
+        private const string secret = "f0M4zm2Zi-JHWXuT6swgcg..";
 
         private CASAPTransactionRegistration()
         {
@@ -88,34 +90,41 @@ namespace CASInterfaceService.Pages.Models
 
         public async void sendTransactionsToCAS(CASAPTransaction casapTransaction)
         {
-            HttpClient client = new HttpClient();
+            //HttpClient client = new HttpClient();
 
             try
             {
                 Console.WriteLine("Starting sendTransactionsToCAS.");
 
-                Console.WriteLine("Start GetToken");
-                var restClient = new RestClient(TokenURL);
-                var request = new RestRequest(Method.POST);
-                request.AddHeader("cache-control", "no-cache");
-                request.AddHeader("content-type", "application/x-www-form-urlencoded");
-                request.AddParameter("application/x-www-form-urlencoded", "grant_type=client_credentials&client_id=" + clientID + "&client_secret=" + secret, ParameterType.RequestBody);
-                IRestResponse response = restClient.Execute(request);
-                Console.WriteLine("Token: " + response.ToString());
-                Console.WriteLine("End GetToken");
+                //===================================
+                //JT - Working version of connectivity to get token and connect, but I think the proper request is not quite correct
+                //Console.WriteLine("Start GetToken");
+                //var restClient = new RestClient(TokenURL);
+                //var request = new RestRequest(Method.POST);
+                //request.AddHeader("cache-control", "no-cache");
+                ////request.AddHeader("content-type", "application/x-www-form-urlencoded");
+                //request.AddHeader("content-type", "application/json");
+                ////request.AddParameter("application/x-www-form-urlencoded", "grant_type=client_credentials&client_id=" + clientID + "&client_secret=" + secret, ParameterType.RequestBody);
+                //request.AddParameter("application/json", "grant_type=client_credentials&client_id=" + clientID + "&client_secret=" + secret, ParameterType.RequestBody);
+                //IRestResponse response = restClient.Execute(request);
+                //Console.WriteLine("Token: " + response.ToString());
+                //Console.WriteLine("End GetToken");
+
+                //Console.WriteLine("Start GetResponse");
+                //var restResponse = new RestClient(URL);
+                //var requestResponse = new RestRequest(Method.POST);
+                //request.AddHeader("cache-control", "no-cache");
+                //request.AddHeader("content-type", "application/x-www-form-urlencoded");
+                //request.AddParameter("application/x-www-form-urlencoded", "grant_type=client_credentials&token=" + response, ParameterType.RequestBody);
+                //IRestResponse responseValue = restClient.Execute(request);
+                //Console.WriteLine("Response: " + responseValue.ToString());
+                //Console.WriteLine("End GetResponse");
+                //===================================
 
 
 
-                Console.WriteLine("Start GetResponse");
-                var restResponse = new RestClient(URL);
-                var requestResponse = new RestRequest(Method.POST);
-                request.AddHeader("cache-control", "no-cache");
-                request.AddHeader("content-type", "application/x-www-form-urlencoded");
-                request.AddParameter("application/x-www-form-urlencoded", "grant_type=client_credentials&token=" + response, ParameterType.RequestBody);
-                IRestResponse responseValue = restClient.Execute(request);
-                Console.WriteLine("Response: " + responseValue.ToString());
-                Console.WriteLine("Start GetResponse");
-
+                //===================================
+                // MANO test for connectivity
                 //Console.WriteLine("Start TEST");
                 //HttpWebRequest HttpWReq =
                 //(HttpWebRequest)WebRequest.Create(TokenURL);
@@ -126,25 +135,97 @@ namespace CASInterfaceService.Pages.Models
                 //Console.WriteLine(HttpWResp.StatusDescription.ToString());
                 //HttpWResp.Close();
                 //Console.WriteLine("End TEST");
+                //===================================
 
 
-                // Send current data in memory to CAS
-                //HttpClient client = new HttpClient();
-                client.BaseAddress = new Uri(URL);
 
-                // Add an Accept header for JSON format.
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TokenURL);
-                
+                //============================
+                //https://seesharpdotnet.wordpress.com/2017/07/30/making-a-post-request-to-an-oauth2-secured-api-using-restsharp/
+                //var url = "https://my.api.endpoint/GetToken";
+                var apiKey = "api_key";
+                var apiPassword = "api_password";
 
-                // Send content to CAS
-                var content = new StringContent(casapTransaction.ToString(), Encoding.UTF8, "application/json");
-                HttpResponseMessage responseX = await client.PostAsync(client.BaseAddress.ToString(), content);
+                //create RestSharp client and POST request object
+                var client = new RestClient(TokenURL);
+                var request = new RestRequest(Method.POST);
+
+                //add GetToken() API method parameters
+                request.Parameters.Clear();
+                request.AddParameter("grant_type", "password");
+                request.AddParameter("username", clientID);// apiKey);
+                request.AddParameter("password", secret);// apiPassword);
+
+                //make the API request and get the response
+                IRestResponse response = client.Execute<AccessToken>(request);
+
+                if (response.ContentLength == -1)
+                {
+                    // No Token, so fail
+                    Console.WriteLine("Unable to collect token, check username: " + apiKey + " and password: " + apiPassword);
+                }
+                else
+                { 
+                    //return an AccessToken
+                    var access_token = JsonConvert.DeserializeObject<AccessToken>(response.Content);
+                    //=================================
+                    //var url = "https://my.api.endpoint/DoStuff";
+
+                    //create RestSharp client and POST request object
+                    client = new RestClient(URL);
+                    request = new RestRequest(Method.POST);
+
+                    //request headers
+                    request.RequestFormat = DataFormat.Json;
+                    request.AddHeader("Content-Type", "application/json");
+
+                    //object containing input parameter data for DoStuff() API method
+                    var apiInput = casapTransaction;// new { name = "Matt", age = 34 };
+
+                    //add parameters and token to request
+                    request.Parameters.Clear();
+                    request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
+                    request.AddParameter("Authorization", "Bearer " + access_token, ParameterType.HttpHeader);
+
+                    //make the API request and get a response
+                    //IRestResponse subResponse = client.Execute<ApiResponse>(request);
+                    IRestResponse subResponse = client.Execute<RestResponse>(request);
+
+                    long gt = 0;
+                    gt = gt + 1;
+
+                    //ApiResponse is a class to model the data we want from the API response
+                    //ApiResponse apiResponse = new ApiResponse(JsonConvert.DeserializeObject<ApiResponse>(subResponse.Content));
+                    //RestResponse apiResponse = new RestResponse(JsonConvert.DeserializeObject<RestResponse>(subResponse.Content));
+                    //CASAPTransaction apiResponse = new CASAPTransaction(JsonConvert.DeserializeObject<CASAPTransaction>(subResponse.Content));
+                    //=========================================
+
+                }
+
+
+
+                //=========================================
+                //First try, probably not quite correct
+                //// Send current data in memory to CAS
+                ////HttpClient client = new HttpClient();
+                //client.BaseAddress = new Uri(URL);
+
+                //// Add an Accept header for JSON format.
+                //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TokenURL);
+
+
+                //// Send content to CAS
+                //var content = new StringContent(casapTransaction.ToString(), Encoding.UTF8, "application/json");
+                //HttpResponseMessage responseX = await client.PostAsync(client.BaseAddress.ToString(), content);
+                //=========================================
+
+
+
             }
             catch (Exception e)
             {
                 var errorContent = new StringContent(casapTransaction.ToString(), Encoding.UTF8, "application/json");
-                Console.WriteLine("Error in sendTransactionsToCAS. " + client.BaseAddress.ToString() + errorContent + client + e.ToString());
+                Console.WriteLine("Error in sendTransactionsToCAS. ");// + client.BaseAddress.ToString() + errorContent + client + e.ToString());
                 throw e;
             }
         }

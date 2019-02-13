@@ -18,19 +18,6 @@ namespace CASInterfaceService.Pages.Controllers
         [HttpPost]
         public CASAPTransactionRegistrationReply RegisterCASAPTransaction(CASAPTransaction casAPTransaction)
         {
-
-            //Console.WriteLine("Start TEST");
-            //HttpWebRequest HttpWReq =
-            //(HttpWebRequest)WebRequest.Create("http://142.34.166.75:7015");//https://molson.cas.gov.bc.ca:7015/ords/cas/cfs/apinvoice/");
-
-            //HttpWebResponse HttpWResp = (HttpWebResponse)HttpWReq.GetResponse();
-            //// Insert code that uses the response object.
-            //Console.WriteLine(HttpWResp.StatusCode.ToString());
-            //Console.WriteLine(HttpWResp.StatusDescription.ToString());
-            //HttpWResp.Close();
-            //Console.WriteLine("End TEST");
-
-
             Console.WriteLine("In RegisterCASAPTransaction");
             CASAPTransactionRegistrationReply casregreply = new CASAPTransactionRegistrationReply();
             CASAPTransactionRegistration.getInstance().Add(casAPTransaction);
@@ -47,18 +34,6 @@ namespace CASInterfaceService.Pages.Controllers
         {
             try
             {
-                //Console.WriteLine("Start TEST");
-                //HttpWebRequest HttpWReq =
-                //(HttpWebRequest)WebRequest.Create("https://142.34.166.75:7015");// ords/cas/cfs/apinvoice/");
-
-                //HttpWebResponse HttpWResp = (HttpWebResponse)HttpWReq.GetResponse();
-                //// Insert code that uses the response object.
-                //Console.WriteLine(HttpWResp.StatusCode.ToString());
-                //Console.WriteLine(HttpWResp.StatusDescription.ToString());
-                //HttpWResp.Close();
-                //Console.WriteLine("End TEST");
-
-
                 Console.WriteLine("In InsertCASAPTransaction");
                 CASAPTransactionRegistrationReply casregreply = new CASAPTransactionRegistrationReply();
                 CASAPTransactionRegistration.getInstance().Add(casAPTransaction);
