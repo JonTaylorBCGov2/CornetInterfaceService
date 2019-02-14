@@ -25,7 +25,7 @@ namespace CASInterfaceService.Pages.Models
         private const string URL = "https://molson.cas.gov.bc.ca:7015/ords/cas/cfs/apinvoice/";
         //private const string TokenURL = "https://<server>:<port>/ords/casords/oauth/token";
         //private const string TokenURL = "https://molson.cas.gov.bc.ca:7015/ords/casords/oauth/token";
-        private const string TokenURL = "https://wsgw.test.jag.gov.bc.ca/ords/casords/oauth/token";
+        private const string TokenURL = "https://wsgw.test.jag.gov.bc.ca/victim/ords/cas/oauth/token";
         private const string clientID = "cybkCJ8PobmEvr3rkpnkeA..";
         private const string secret = "f0M4zm2Zi-JHWXuT6swgcg..";
 
@@ -133,7 +133,9 @@ namespace CASInterfaceService.Pages.Models
 
                 HttpClient client = new HttpClient(handler);
                 var byteArray = Encoding.ASCII.GetBytes("Y3lia0NKOFBvYm1FdnIzcmtwbmtlQS4uOmYwTTR6bTJaaS1KSFdYdVQ2c3dnY2cuLg==");
+                //var byteArray = Encoding.ASCII.GetBytes("cybkCJ8PobmEvr3rkpnkeA..:f0M4zm2Zi-JHWXuT6swgcg.."); // NOT THIS ONE
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+                //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToString(byteArray));
 
                 HttpResponseMessage response = await client.GetAsync(TokenURL);
                 HttpContent content = response.Content;
