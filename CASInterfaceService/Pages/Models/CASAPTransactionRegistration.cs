@@ -122,6 +122,36 @@ namespace CASInterfaceService.Pages.Models
                 //===================================
 
 
+                //===================================
+                HttpClientHandler handler = new HttpClientHandler();
+                //{
+                //    Proxy = new WebProxy(TokenURL),
+                //    UseProxy = true,
+                //};
+
+                Console.WriteLine("GET: + " + TokenURL);
+
+                HttpClient client = new HttpClient(handler);
+                var byteArray = Encoding.ASCII.GetBytes("Y3lia0NKOFBvYm1FdnIzcmtwbmtlQS4uOmYwTTR6bTJaaS1KSFdYdVQ2c3dnY2cuLg==");
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+
+                HttpResponseMessage response = await client.GetAsync(TokenURL);
+                HttpContent content = response.Content;
+
+                Console.WriteLine("Response StatusCode: " + (int)response.StatusCode);
+
+                // ... Read the string.
+                string result = await content.ReadAsStringAsync();
+
+                // ... Display the result.
+                if (result != null &&
+                result.Length >= 50)
+                {
+                    Console.WriteLine(result.Substring(0, 50) + "...");
+                }
+                //===================================
+
+
 
                 //===================================
                 // MANO test for connectivity
@@ -139,67 +169,71 @@ namespace CASInterfaceService.Pages.Models
 
 
 
-                //============================
-                //https://seesharpdotnet.wordpress.com/2017/07/30/making-a-post-request-to-an-oauth2-secured-api-using-restsharp/
-                //var url = "https://my.api.endpoint/GetToken";
-                var apiKey = "api_key";
-                var apiPassword = "api_password";
+                ////============================
+                ////https://seesharpdotnet.wordpress.com/2017/07/30/making-a-post-request-to-an-oauth2-secured-api-using-restsharp/
+                ////var url = "https://my.api.endpoint/GetToken";
+                //var apiKey = "api_key";
+                //var apiPassword = "api_password";
 
-                //create RestSharp client and POST request object
-                var client = new RestClient(TokenURL);
-                var request = new RestRequest(Method.POST);
+                ////create RestSharp client and POST request object
+                //var client = new RestClient(TokenURL);
+                //var request = new RestRequest(Method.POST);
 
-                //add GetToken() API method parameters
-                request.Parameters.Clear();
-                request.AddParameter("grant_type", "password");
-                request.AddParameter("username", clientID);// apiKey);
-                request.AddParameter("password", secret);// apiPassword);
+                ////add GetToken() API method parameters
+                //request.Parameters.Clear();
+                //request.AddParameter("grant_type", "password");
+                //request.AddParameter("username", clientID);// apiKey);
+                //request.AddParameter("password", secret);// apiPassword);
 
-                //make the API request and get the response
-                IRestResponse response = client.Execute<AccessToken>(request);
+                ////make the API request and get the response
+                //IRestResponse response = client.Execute<AccessToken>(request);
 
-                if (response.ContentLength == -1)
-                {
-                    // No Token, so fail
-                    Console.WriteLine("Unable to collect token, check username: " + apiKey + " and password: " + apiPassword);
-                }
-                else
-                { 
-                    //return an AccessToken
-                    var access_token = JsonConvert.DeserializeObject<AccessToken>(response.Content);
-                    //=================================
-                    //var url = "https://my.api.endpoint/DoStuff";
+                //if (response.ContentLength == -1)
+                //{
+                //    // No Token, so fail
+                //    //Console.WriteLine("Unable to collect token, check username: " + apiKey + " and password: " + apiPassword);
+                //    Console.WriteLine("Unable to collect token, check username: " + clientID + " and password: " + secret);
+                //}
+                //else
+                //{ 
+                //    //return an AccessToken
+                //    var access_token = JsonConvert.DeserializeObject<AccessToken>(response.Content);
+                //    //=================================
+                //    //var url = "https://my.api.endpoint/DoStuff";
 
-                    //create RestSharp client and POST request object
-                    client = new RestClient(URL);
-                    request = new RestRequest(Method.POST);
+                //    //create RestSharp client and POST request object
+                //    client = new RestClient(URL);
+                //    request = new RestRequest(Method.POST);
 
-                    //request headers
-                    request.RequestFormat = DataFormat.Json;
-                    request.AddHeader("Content-Type", "application/json");
+                //    //request headers
+                //    request.RequestFormat = DataFormat.Json;
+                //    request.AddHeader("Content-Type", "application/json");
 
-                    //object containing input parameter data for DoStuff() API method
-                    var apiInput = casapTransaction;// new { name = "Matt", age = 34 };
+                //    //object containing input parameter data for DoStuff() API method
+                //    var apiInput = casapTransaction;// new { name = "Matt", age = 34 };
 
-                    //add parameters and token to request
-                    request.Parameters.Clear();
-                    request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
-                    request.AddParameter("Authorization", "Bearer " + access_token, ParameterType.HttpHeader);
+                //    //add parameters and token to request
+                //    request.Parameters.Clear();
+                //    request.AddParameter("application/json", JsonConvert.SerializeObject(apiInput), ParameterType.RequestBody);
+                //    request.AddParameter("Authorization", "Bearer " + access_token, ParameterType.HttpHeader);
 
-                    //make the API request and get a response
-                    //IRestResponse subResponse = client.Execute<ApiResponse>(request);
-                    IRestResponse subResponse = client.Execute<RestResponse>(request);
+                //    //make the API request and get a response
+                //    //IRestResponse subResponse = client.Execute<ApiResponse>(request);
+                //    IRestResponse subResponse = client.Execute<RestResponse>(request);
 
-                    long gt = 0;
-                    gt = gt + 1;
+                //    long gt = 0;
+                //    gt = gt + 1;
 
-                    //ApiResponse is a class to model the data we want from the API response
-                    //ApiResponse apiResponse = new ApiResponse(JsonConvert.DeserializeObject<ApiResponse>(subResponse.Content));
-                    //RestResponse apiResponse = new RestResponse(JsonConvert.DeserializeObject<RestResponse>(subResponse.Content));
-                    //CASAPTransaction apiResponse = new CASAPTransaction(JsonConvert.DeserializeObject<CASAPTransaction>(subResponse.Content));
-                    //=========================================
+                //    //ApiResponse is a class to model the data we want from the API response
+                //    //ApiResponse apiResponse = new ApiResponse(JsonConvert.DeserializeObject<ApiResponse>(subResponse.Content));
+                //    //RestResponse apiResponse = new RestResponse(JsonConvert.DeserializeObject<RestResponse>(subResponse.Content));
+                //    //CASAPTransaction apiResponse = new CASAPTransaction(JsonConvert.DeserializeObject<CASAPTransaction>(subResponse.Content));
+                //    //=========================================
 
-                }
+                //}
+                ////=========================================
+
+
 
 
 
