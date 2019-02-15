@@ -40,4 +40,34 @@ namespace CASInterfaceService.Pages.Controllers
             return "Only if you have a valid token!";
         }
     }
+
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CASAPRetrieveController : Controller
+    {
+        // GET: api/<controller>
+        [HttpGet]
+        public List<CASAPTransaction> GetAllTransactions()
+        {
+            return CASAPTransactionRegistration.getInstance().getAllCASAPTransaction();
+        }
+        [HttpGet("GetAllTransactionRecords")]
+        public JsonResult GetAllTransactionRecords()
+        {
+            return Json(CASAPTransactionRegistration.getInstance().getAllCASAPTransaction());
+        }
+        [HttpGet("GetTransactionUpdateRecords")]
+        public JsonResult GetTransactionUpdateRecords()
+        {
+            return Json(CASAPTransactionRegistration.getInstance().getAllCASAPTransaction());
+        }
+
+        [Route("/api/protected")]
+        [Authorize]
+        [HttpGet("Protected")]
+        public string Protected()
+        {
+            return "Only if you have a valid token!";
+        }
+    }
 }
