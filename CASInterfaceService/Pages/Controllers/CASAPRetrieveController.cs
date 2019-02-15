@@ -49,17 +49,27 @@ namespace CASInterfaceService.Pages.Controllers
         [HttpGet]
         public List<CASAPTransaction> GetAllTransactions()
         {
+            // Call CAS to get the proper data
+            CASAPTransactionRegistration.getInstance().getTransactionsFromCAS();
+
             return CASAPTransactionRegistration.getInstance().getAllCASAPTransaction();
         }
         [HttpGet("GetAllTransactionRecords")]
         public JsonResult GetAllTransactionRecords()
         {
+            // Call CAS to get the proper data
+            CASAPTransactionRegistration.getInstance().getTransactionsFromCAS();
+
             return Json(CASAPTransactionRegistration.getInstance().getAllCASAPTransaction());
         }
         [HttpGet("GetTransactionUpdateRecords")]
         public JsonResult GetTransactionUpdateRecords()
         {
+            // Call CAS to get the proper data
+            CASAPTransactionRegistration.getInstance().getTransactionsFromCAS();
+
             return Json(CASAPTransactionRegistration.getInstance().getAllCASAPTransaction());
+
         }
 
         [Route("/api/protected")]

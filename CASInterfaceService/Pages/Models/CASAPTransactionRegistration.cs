@@ -51,37 +51,11 @@ namespace CASInterfaceService.Pages.Models
         {
             casAPTransactionList.Add(casapTransaction);
         }
-        //public String Remove(String registrationNumber)
-        //{
-        //    for (int i = 0; i < casAPTransactionList.Count; i++)
-        //    {
-        //        CASAPTransaction casn = casAPTransactionList.ElementAt(i);
-        //        if (casn.RegistrationNumber.Equals(registrationNumber))
-        //        {
-        //            casAPTransactionList.RemoveAt(i);//update the new record
-        //            return "Delete successful";
-        //        }
-        //    }
-        //    return "Delete un-successful";
-        //}
 
         public List<CASAPTransaction> getAllCASAPTransaction()
         {
             return casAPTransactionList;
         }
-        //public String UpdateStudent(Student std)
-        //{
-        //    for (int i = 0; i < studentList.Count; i++)
-        //    {
-        //        Student stdn = studentList.ElementAt(i);
-        //        if (stdn.RegistrationNumber.Equals(std.RegistrationNumber))
-        //        {
-        //            studentList[i] = std;//update the new record
-        //            return "Update successful";
-        //        }
-        //    }
-        //    return "Update un-successful";
-        //}
 
         public List<CASAPTransaction> getUpdateCASAPTransaction()
         {
@@ -262,6 +236,40 @@ namespace CASInterfaceService.Pages.Models
             {
                 var errorContent = new StringContent(casapTransaction.ToString(), Encoding.UTF8, "application/json");
                 Console.WriteLine("Error in sendTransactionsToCAS. ");// + client.BaseAddress.ToString() + errorContent + client + e.ToString());
+                throw e;
+            }
+        }
+        public async void getTransactionsFromCAS()//CASAPTransaction casapTransaction)
+        {
+            try
+            {
+                HttpClientHandler handler = new HttpClientHandler();
+
+                Console.WriteLine("GET: + " + TokenURL);
+
+                HttpClient client = new HttpClient(handler);
+
+                var byteArray = Encoding.ASCII.GetBytes("Y3lia0NKOFBvYm1FdnIzcmtwbmtlQS4uOmYwTTR6bTJaaS1KSFdYdVQ2c3dnY2cuLg==");
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+
+                HttpResponseMessage response = await client.GetAsync(TokenURL);
+                HttpContent content = response.Content;
+
+                Console.WriteLine("Response StatusCode: " + (int)response.StatusCode);
+
+                // ... Read the string.
+                string result = await content.ReadAsStringAsync();
+
+                // ... Display the result.
+                if (result != null && result.Length >= 50)
+                {
+                    Console.WriteLine(result.Substring(0, 50) + "...");
+                }
+            }
+            catch (Exception e)
+            {
+                var errorContent = new StringContent("Didn't work", Encoding.UTF8, "application/json");
+                Console.WriteLine("Error in getTransactionsFromCAS. ");// + client.BaseAddress.ToString() + errorContent + client + e.ToString());
                 throw e;
             }
         }
