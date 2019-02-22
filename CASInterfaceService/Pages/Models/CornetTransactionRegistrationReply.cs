@@ -2,7 +2,7 @@
 
 namespace CASInterfaceService.Pages.Models
 {
-    public class CornetTransactionReply
+    public class CornetTransactionRegistrationReply
     {
         String responseCode;
         public String ResponseCode

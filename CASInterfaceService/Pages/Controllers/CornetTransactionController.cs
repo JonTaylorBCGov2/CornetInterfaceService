@@ -12,12 +12,13 @@ namespace CASInterfaceService.Pages.Controllers
     {
         // POST: api/<controller>
         [HttpPost]
-        public CornetTransactionReply RegisterCornetTransaction(CornetTransaction cornetTransaction)
+        public CornetTransactionRegistrationReply RegisterCornetTransaction(CornetTransaction cornetTransaction)
         {
             Console.WriteLine("In RegisterCornetTransaction");
-            CornetTransactionReply cornetregreply = new CornetTransactionReply();
+            CornetTransactionRegistrationReply cornetregreply = new CornetTransactionRegistrationReply();
             CornetTransactionRegistration.getInstance().Add(cornetTransaction);
             cornetregreply.ResponseMessage = "Success";
+            cornetregreply.ResponseCode = "ABC";
 
             return cornetregreply;
         }
@@ -28,7 +29,7 @@ namespace CASInterfaceService.Pages.Controllers
             try
             {
                 Console.WriteLine("In InsertCornetTransaction");
-                CornetTransactionReply casregreply = new CornetTransactionReply();
+                CornetTransactionRegistrationReply casregreply = new CornetTransactionRegistrationReply();
                 CornetTransactionRegistration.getInstance().Add(cornetTransaction);
                 casregreply.ResponseMessage = "Success";
 
