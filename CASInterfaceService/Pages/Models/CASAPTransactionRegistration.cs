@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.Twitter;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -108,23 +109,51 @@ namespace CASInterfaceService.Pages.Models
                 HttpClient client = new HttpClient(handler);
                 var byteArray = Encoding.ASCII.GetBytes("Y3lia0NKOFBvYm1FdnIzcmtwbmtlQS4uOmYwTTR6bTJaaS1KSFdYdVQ2c3dnY2cuLg==");
                 //var byteArray = Encoding.ASCII.GetBytes("cybkCJ8PobmEvr3rkpnkeA..:f0M4zm2Zi-JHWXuT6swgcg.."); // NOT THIS ONE
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+
+//                client.DefaultRequestHeaders.ProxyAuthorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+
                 //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToString(byteArray));
 
-                HttpResponseMessage response = await client.GetAsync(TokenURL);
-                HttpContent content = response.Content;
+
+                var request = new HttpRequestMessage(HttpMethod.Post, TokenURL);
+
+                var formData = new List<KeyValuePair<string, string>>();
+                formData.Add(new KeyValuePair<string, string>("grant_type", "client_credentials"));
+                //formData.Add(new KeyValuePair<string, string>("username", "<email>"));
+                //formData.Add(new KeyValuePair<string, string>("password", "<password>"));
+                //formData.Add(new KeyValuePair<string, string>("scope", "all"));
+
+                
+                request.Content = new FormUrlEncodedContent(formData);
+                var response = await client.SendAsync(request);
+                //var response = await client.PostAsync(TokenURL, new StringContent(request));
+
+                //HttpResponseMessage response = await client.GetAsync(TokenURL);
+                //HttpContent content = new HttpContent();
+                //var stringContent = new StringContent();
+//                HttpResponseMessage response = await client.PostAsync(TokenURL, new StringContent(""));
+                //HttpContent content = response.Content;
+
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("Response Body: " + responseBody);
+
+
+
 
                 Console.WriteLine("Response StatusCode: " + (int)response.StatusCode);
 
                 // ... Read the string.
-                string result = await content.ReadAsStringAsync();
+                //string result = await content.ReadAsStringAsync();
 
                 // ... Display the result.
-                if (result != null &&
-                result.Length >= 50)
-                {
-                    Console.WriteLine(result.Substring(0, 50) + "...");
-                }
+                //if (result != null &&
+                //result.Length >= 50)
+                //{
+                //    Console.WriteLine(result.Substring(0, 50) + "...");
+                //}
                 //===================================
 
 
