@@ -18,7 +18,7 @@ namespace CASInterfaceService.Pages.Controllers
             CornetTransactionRegistrationReply cornetregreply = new CornetTransactionRegistrationReply();
             CornetTransactionRegistration.getInstance().Add(cornetTransaction);
             cornetregreply.ResponseMessage = "Success";
-            cornetregreply.ResponseCode = "ABC";
+            cornetregreply.ResponseCode = "1";
 
             return cornetregreply;
         }
