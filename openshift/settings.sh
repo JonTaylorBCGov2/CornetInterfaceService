@@ -11,13 +11,13 @@ export GIT_REF="master"
 
 # The project components
 # - defaults to the support the Simple Project Structure
-export components=${components:-"CASInterfaceService"}
+export components=${components:-"casinterfaceservice"}
 
 # The builds to be triggered after buildconfigs created (not auto-triggered)
 export builds=${builds:-""}
 
 # The images to be tagged after build
-export images=${images:-"CASInterfaceService"}
+export images=${images:-"casinterfaceservice"}
 
 # The routes for the project
 export routes=${routes:-""}
