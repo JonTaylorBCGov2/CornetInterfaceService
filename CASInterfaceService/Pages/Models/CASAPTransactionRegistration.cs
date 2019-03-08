@@ -121,7 +121,6 @@ namespace CASInterfaceService.Pages.Models
             System.Text.ASCIIEncoding.ASCII.GetBytes(
                 string.Format("{0}:{1}", clientID, secret))));
 
-                Console.WriteLine("Perform authentication done");
 
                 //                client.DefaultRequestHeaders.ProxyAuthorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 
@@ -154,9 +153,6 @@ namespace CASInterfaceService.Pages.Models
                 Console.WriteLine("Response Body: " + responseBody);
 
 
-
-
-                Console.WriteLine("Response StatusCode: " + (int)response.StatusCode);
 
                 // ... Read the string.
                 //string result = await content.ReadAsStringAsync();
@@ -294,10 +290,12 @@ namespace CASInterfaceService.Pages.Models
 
                     //   packageResult = packageClient.GetAsync(URL).Result;
 
-                            if (packageResult.StatusCode == HttpStatusCode.Unauthorized)
+                    Console.WriteLine("This was the result: " + packageResult.StatusCode);
+                    if (packageResult.StatusCode == HttpStatusCode.Unauthorized)
                             {
-                                // Process the error
-                            }
+                        // Process the error
+                        Console.WriteLine("Ruh Roh, there was an error: " + packageResult.StatusCode);
+                    }
                         //}
                   //  }
                 }
