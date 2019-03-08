@@ -23,7 +23,8 @@ namespace CASInterfaceService.Pages.Models
         // PROD  - labatt.cas.gov.bc.ca - 142.34.166.201 - 7010
 
         //private const string URL = "https://<server>:<port>ords/cas/cfs/apinvoice/";
-        private const string URL = "https://molson.cas.gov.bc.ca:7015/ords/cas/cfs/apinvoice/";
+        //private const string URL = "https://molson.cas.gov.bc.ca:7015/ords/cas/cfs/apinvoice/";
+        private const string URL = "https://wsgw.test.jag.gov.bc.ca/victim/ords/cas/cfs/apinvoice/";
         //private const string TokenURL = "https://<server>:<port>/ords/casords/oauth/token";
         //private const string TokenURL = "https://molson.cas.gov.bc.ca:7015/ords/casords/oauth/token";
         private const string TokenURL = "https://wsgw.test.jag.gov.bc.ca/victim/ords/cas/oauth/token";
@@ -109,9 +110,19 @@ namespace CASInterfaceService.Pages.Models
                 HttpClient client = new HttpClient(handler);
                 var byteArray = Encoding.ASCII.GetBytes("Y3lia0NKOFBvYm1FdnIzcmtwbmtlQS4uOmYwTTR6bTJaaS1KSFdYdVQ2c3dnY2cuLg==");
                 //var byteArray = Encoding.ASCII.GetBytes("cybkCJ8PobmEvr3rkpnkeA..:f0M4zm2Zi-JHWXuT6swgcg.."); // NOT THIS ONE
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+//                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+                //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToString(byteArray));
 
-//                client.DefaultRequestHeaders.ProxyAuthorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+
+                client.DefaultRequestHeaders.Authorization =
+    new AuthenticationHeaderValue(
+        "Basic",
+        Convert.ToBase64String(
+            System.Text.ASCIIEncoding.ASCII.GetBytes(
+                string.Format("{0}:{1}", clientID, secret))));
+
+
+                //                client.DefaultRequestHeaders.ProxyAuthorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 
                 //client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToString(byteArray));
 
@@ -259,6 +270,51 @@ namespace CASInterfaceService.Pages.Models
                 //=========================================
 
 
+                // Our returned token at this point is: responseBody
+                Console.WriteLine("Received token successfully, now to send package to CAS.");
+
+
+                using (var packageClient = new HttpClient())
+                {
+                    packageClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseBody);
+                    //packageClient.PostAsync(URL, casapTransaction);
+                    //HttpResponseMessage packageResult = packageClient.GetAsync(URL).Result;
+                    var jsonString = JsonConvert.SerializeObject(casapTransaction);
+                    var postContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                    HttpResponseMessage packageResult = await packageClient.PostAsync(URL, postContent);
+
+                    //if (packageResult.StatusCode == HttpStatusCode.Unauthorized)
+                    //{
+                    //    //RefreshToken(); /* Or reenter resource owner credentials if refresh token is not implemented */
+                    //    //if (/* token refreshed, repeat the request using the new access token */)
+                    //    //{
+                    //        packageClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseBody);
+
+                    //   packageResult = packageClient.GetAsync(URL).Result;
+
+                            if (packageResult.StatusCode == HttpStatusCode.Unauthorized)
+                            {
+                                // Process the error
+                            }
+                        //}
+                  //  }
+                }
+
+
+
+
+                //HttpClientHandler packageHandler = new HttpClientHandler();
+                //Console.WriteLine("GET: + " + URL);
+                //HttpClient packageClient = new HttpClient(handler);
+
+                //packageClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(string.Format("{0}", responseBody))));
+
+                //var packageRequest = new HttpRequestMessage(HttpMethod.Post, URL);
+                //var packageFormData = new List<KeyValuePair<string, string>>();
+                //packageFormData.Add(new KeyValuePair<string, string>("grant_type", "client_credentials"));
+
+                //packageRequest.Content = new FormUrlEncodedContent(packageFormData);
+                //var packageResponse = await client.SendAsync(packageRequest);
 
             }
             catch (Exception e)
