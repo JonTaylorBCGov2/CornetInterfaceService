@@ -121,6 +121,7 @@ namespace CASInterfaceService.Pages.Models
             System.Text.ASCIIEncoding.ASCII.GetBytes(
                 string.Format("{0}:{1}", clientID, secret))));
 
+                Console.WriteLine("Perform authentication done");
 
                 //                client.DefaultRequestHeaders.ProxyAuthorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 
@@ -135,7 +136,7 @@ namespace CASInterfaceService.Pages.Models
                 //formData.Add(new KeyValuePair<string, string>("password", "<password>"));
                 //formData.Add(new KeyValuePair<string, string>("scope", "all"));
 
-                
+                Console.WriteLine("Add credentials");
                 request.Content = new FormUrlEncodedContent(formData);
                 var response = await client.SendAsync(request);
                 //var response = await client.PostAsync(TokenURL, new StringContent(request));
@@ -147,6 +148,7 @@ namespace CASInterfaceService.Pages.Models
                 //HttpContent content = response.Content;
 
                 response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                Console.WriteLine("Response Received: " + response.StatusCode);
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
                 Console.WriteLine("Response Body: " + responseBody);
