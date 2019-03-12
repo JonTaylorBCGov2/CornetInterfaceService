@@ -374,8 +374,8 @@ namespace CASInterfaceService.Pages.Models
             set { TrackAsAsset = value; }
         }
 
-        String assetBook;
-        public String AssetBook
+        String AssetBook;
+        public String assetBook
         {
             get { return AssetBook; }
             set { AssetBook = value; }
