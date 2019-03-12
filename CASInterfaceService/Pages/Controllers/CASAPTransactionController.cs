@@ -79,12 +79,14 @@ namespace CASInterfaceService.Pages.Controllers
                 {
                     packageClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseToken);
                     var jsonString = JsonConvert.SerializeObject(casAPTransaction);
-                    HttpContent postContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                    //HttpContent postContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                    HttpContent postContent = new StringContent(jsonString);
                     HttpResponseMessage packageResult = await packageClient.PostAsync(URL, postContent);
 
                     Console.WriteLine("This was the result: " + packageResult.StatusCode);
-                    outputMessage = Convert.ToString(packageResult.StatusCode);
-
+                    //outputMessage = Convert.ToString(packageResult.StatusCode);
+                    outputMessage = Convert.ToString(packageResult.Content.ReadAsStringAsync().Result);
+                    
                     if (packageResult.StatusCode == HttpStatusCode.Unauthorized)
                     {
                         Console.WriteLine("Ruh Roh, there was an error: " + packageResult.StatusCode);

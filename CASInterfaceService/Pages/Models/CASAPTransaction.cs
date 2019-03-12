@@ -8,289 +8,289 @@ namespace CASInterfaceService.Pages.Models
 {
     public class CASAPTransaction
     {
-        String operatingUnit;
-        public String OperatingUnit
+        String OperatingUnit;
+        public String operatingUnit
         {
-            get { return operatingUnit; }
-            set { operatingUnit = value; }
+            get { return OperatingUnit; }
+            set { OperatingUnit = value; }
         }
 
-        String invoiceType;
+        String InvoiceType;
         [Required]
         [MaxLength(25)]
-        public String InvoiceType 
+        public String invoiceType 
         {
-            get { return invoiceType;  }
-            set { invoiceType = value; } 
+            get { return InvoiceType;  }
+            set { InvoiceType = value; } 
         }
 
-        String poNumber; // Must be NULL
-        public String PONumber
+        String PONumber; // Must be NULL
+        public String poNumber
         {
-            get { return poNumber;  }
-            set { poNumber = null; }
+            get { return PONumber;  }
+            set { PONumber = null; }
         }
 
-        String supplierName;
-        public String SupplierName
+        String SupplierName;
+        public String supplierName
         {
-            get { return supplierName;  }
-            set { supplierName = value; }
+            get { return SupplierName;  }
+            set { SupplierName = value; }
         }
 
-        String supplierNumber;
+        String SupplierNumber;
         [Required]
         [MaxLength(30)]
-        public String SupplierNumber
+        public String supplierNumber
         {
-            get { return supplierNumber;  }
-            set { supplierNumber = value; }
+            get { return SupplierNumber;  }
+            set { SupplierNumber = value; }
         }
 
-        DateTime invoiceDate; // Format: 21-FEB-2017
+        String InvoiceDate; // Format: 21-FEB-2017
         [Required]
-        public DateTime InvoiceDate
+        public String invoiceDate
         {
-            get { return invoiceDate; }
-            set { invoiceDate = value; }
+            get { return InvoiceDate; }
+            set { InvoiceDate = value; }
         }
 
-        String invoiceNumber;
+        String InvoiceNumber;
         [Required]
         [MaxLength(40)]
-        public String InvoiceNumber
+        public String invoiceNumber
         {
-            get { return invoiceNumber; }
-            set { invoiceNumber = value; }
+            get { return InvoiceNumber; }
+            set { InvoiceNumber = value; }
         }
 
-        Decimal invoiceAmount; // Format: 9(12).99
+        Decimal InvoiceAmount; // Format: 9(12).99
         [Required]
-        public Decimal InvoiceAmount
+        public Decimal invoiceAmount
         {
-            get { return invoiceAmount; }
-            set { invoiceAmount = value; }
+            get { return InvoiceAmount; }
+            set { InvoiceAmount = value; }
         }
 
-        String payGroup;
+        String PayGroup;
         [Required]
         [MaxLength(7)]
-        public String PayGroup
+        public String payGroup
         {
-            get { return payGroup; }
-            set { payGroup = value; }
+            get { return PayGroup; }
+            set { PayGroup = value; }
         }
 
-        DateTime dateInvoiceReceived; // Format: 21-FEB-2017
+        String DateInvoiceReceived; // Format: 21-FEB-2017
         [Required]
-        public DateTime DateInvoiceReceived
+        public String dateInvoiceReceived
         {
-            get { return dateInvoiceReceived; }
-            set { dateInvoiceReceived = value; }
+            get { return DateInvoiceReceived; }
+            set { DateInvoiceReceived = value; }
         }
 
-        DateTime dateGoodsReceived; // Format: 21-FEB-2017
-        public DateTime DateGoodsReceived
+        String DateGoodsReceived; // Format: 21-FEB-2017
+        public String dateGoodsReceived
         {
-            get { return dateGoodsReceived; }
-            set { dateGoodsReceived = value; }
+            get { return DateGoodsReceived; }
+            set { DateGoodsReceived = value; }
         }
 
-        String remittanceCode;
+        String RemittanceCode;
         [Required]
         [MaxLength(2)]
-        public String RemittanceCode
+        public String remittanceCode
         {
-            get { return remittanceCode; }
-            set { remittanceCode = value; }
+            get { return RemittanceCode; }
+            set { RemittanceCode = value; }
         }
 
-        String specialHandling;
+        String SpecialHandling;
         [Required]
         [MaxLength(1)]
-        public String SpecialHandling
+        public String specialHandling
         {
-            get { return specialHandling; }
-            set { specialHandling = value; }
+            get { return SpecialHandling; }
+            set { SpecialHandling = value; }
         }
 
-        String nameLine1;
+        String NameLine1;
         [MaxLength(40)]
-        public String NameLine1
+        public String nameLine1
         {
-            get { return nameLine1; }
-            set { nameLine1 = value; }
+            get { return NameLine1; }
+            set { NameLine1 = value; }
         }
 
-        String nameLine2;
+        String NameLine2;
         [MaxLength(40)]
-        public String NameLine2
+        public String nameLine2
         {
-            get { return nameLine2; }
-            set { nameLine2 = value; }
+            get { return NameLine2; }
+            set { NameLine2 = value; }
         }
 
-        String addressLine1;
+        String AddressLine1;
         [MaxLength(40)]
-        public String AddressLine1
+        public String addressLine1
         {
-            get { return addressLine1; }
-            set { addressLine1 = value; }
+            get { return AddressLine1; }
+            set { AddressLine1 = value; }
         }
 
-        String addressLine2;
+        String AddressLine2;
         [MaxLength(40)]
-        public String AddressLine2
+        public String addressLine2
         {
-            get { return addressLine2; }
-            set { addressLine2 = value; }
+            get { return AddressLine2; }
+            set { AddressLine2 = value; }
         }
 
-        String addressLine3;
+        String AddressLine3;
         [MaxLength(40)]
-        public String AddressLine3
+        public String addressLine3
         {
-            get { return addressLine3; }
-            set { addressLine3 = value; }
+            get { return AddressLine3; }
+            set { AddressLine3 = value; }
         }
 
-        String city;
+        String City;
         [MaxLength(25)]
-        public String City
+        public String city
         {
-            get { return city; }
-            set { city = value; }
+            get { return City; }
+            set { City = value; }
         }
 
-        String country;
+        String Country;
         [MaxLength(2)]
-        public String Country
+        public String country
         {
-            get { return country; }
-            set { country = value; }
+            get { return Country; }
+            set { Country = value; }
         }
 
-        String province;
+        String Province;
         [MaxLength(2)]
-        public String Province
+        public String province
         {
-            get { return province; }
-            set { province = value; }
+            get { return Province; }
+            set { Province = value; }
         }
 
-        String postalCode;
+        String PostalCode;
         [MaxLength(10)]
-        public String PostalCode
+        public String postalCode
         {
-            get { return postalCode; }
-            set { postalCode = value; }
+            get { return PostalCode; }
+            set { PostalCode = value; }
         }
 
-        String qualifiedReceiver;
+        String QualifiedReceiver;
         [MaxLength(150)]
-        public String QualifiedReceiver
+        public String qualifiedReceiver
         {
-            get { return qualifiedReceiver; }
-            set { qualifiedReceiver = value; }
+            get { return QualifiedReceiver; }
+            set { QualifiedReceiver = value; }
         }
 
-        String terms;
+        String Terms;
         [Required]
         [MaxLength(50)]
-        public String Terms
+        public String terms
         {
-            get { return terms; }
-            set { terms = value; }
+            get { return Terms; }
+            set { Terms = value; }
         }
 
-        String payAloneFlag;
+        String PayAloneFlag;
         [Required]
         [MaxLength(1, ErrorMessage = "payAlone must be 'Y' or 'N'")]
-        public String PayAloneFlag
+        public String payAloneFlag
         {
-            get { return payAloneFlag; }
+            get { return PayAloneFlag; }
             set {
                 if (value == "")
                 {
-                    payAloneFlag = "N";
+                    PayAloneFlag = "N";
                 }
                 else
                 {
-                    payAloneFlag = value;
+                    PayAloneFlag = value;
                 }
             }
         }
 
-        String paymentAdviceComments;
+        String PaymentAdviceComments;
         [MaxLength(40)]
-        public String PaymentAdviceComments
+        public String paymentAdviceComments
         {
-            get { return paymentAdviceComments; }
-            set { paymentAdviceComments = value; }
+            get { return PaymentAdviceComments; }
+            set { PaymentAdviceComments = value; }
         }
 
-        String remittanceMessage1;
+        String RemittanceMessage1;
         [MaxLength(150)]
-        public String RemittanceMessage1
+        public String remittanceMessage1
         {
-            get { return remittanceMessage1; }
-            set { remittanceMessage1 = value; }
+            get { return RemittanceMessage1; }
+            set { RemittanceMessage1 = value; }
         }
 
-        String remittanceMessage2;
+        String RemittanceMessage2;
         [MaxLength(150)]
-        public String RemittanceMessage2
+        public String remittanceMessage2
         {
-            get { return remittanceMessage2; }
-            set { remittanceMessage2 = value; }
+            get { return RemittanceMessage2; }
+            set { RemittanceMessage2 = value; }
         }
 
-        String remittanceMessage3;
+        String RemittanceMessage3;
         [MaxLength(150)]
-        public String RemittanceMessage3
+        public String remittanceMessage3
         {
-            get { return remittanceMessage3; }
-            set { remittanceMessage3 = value; }
+            get { return RemittanceMessage3; }
+            set { RemittanceMessage3 = value; }
         }
 
-        DateTime termsDate; // Format: 21-FEB-2017
-        public DateTime TermsDate
+        String TermsDate; // Format: 21-FEB-2017
+        public String termsDate
         {
-            get { return termsDate; }
-            set { termsDate = value; }
+            get { return TermsDate; }
+            set { TermsDate = value; }
         }
 
-        DateTime glDate; // Format: 21-FEB-2017
+        String GLDate; // Format: 21-FEB-2017
         [Required]
-        public DateTime GLDate
+        public String glDate
         {
-            get { return glDate; }
-            set { glDate = value; }
+            get { return GLDate; }
+            set { GLDate = value; }
         }
 
-        String invoiceBatchName;
+        String InvoiceBatchName;
         [Required]
         [MaxLength(50)]
-        public String InvoiceBatchName
+        public String invoiceBatchName
         {
-            get { return invoiceBatchName; }
-            set { invoiceBatchName = value; }
+            get { return InvoiceBatchName; }
+            set { InvoiceBatchName = value; }
         }
 
-        String currencyCode;
+        String CurrencyCode;
         [Required]
         [MaxLength(3)]
-        public String CurrencyCode
+        public String currencyCode
         {
-            get { return currencyCode; }
-            set { currencyCode = "CAD"; }
+            get { return CurrencyCode; }
+            set { CurrencyCode = "CAD"; }
         }
 
-        List<InvoiceLineDetail> invoiceLineDetails;
-        public List<InvoiceLineDetail> InvoiceLineDetails
+        List<InvoiceLineDetail> InvoiceLineDetails;
+        public List<InvoiceLineDetail> invoiceLineDetails
         {
-            get { return invoiceLineDetails; }
-            set { invoiceLineDetails = value; }
+            get { return InvoiceLineDetails; }
+            set { InvoiceLineDetails = value; }
         }
 
 
@@ -304,39 +304,39 @@ namespace CASInterfaceService.Pages.Models
         //    set { glDate = value; }
         //}
 
-        String poReference; 
-        public String POReference
+        String POReference; 
+        public String poReference
         {
-            get { return poReference; }
-            set { poReference = value; }
+            get { return POReference; }
+            set { POReference = value; }
         }
 
-        String t4aReportingCode;
-        public String T4aReportingCode
+        String T4aReportingCode;
+        public String t4aReportingCode
         {
-            get { return t4aReportingCode; }
-            set { t4aReportingCode = value; }
+            get { return T4aReportingCode; }
+            set { T4aReportingCode = value; }
         }
 
-        DateTime t4aInvoiceDate; // Format: 21-FEB-2017
-        public DateTime T4aInvoiceDate
+        String T4aInvoiceDate; // Format: 21-FEB-2017
+        public String t4aInvoiceDate
         {
-            get { return t4aInvoiceDate; }
-            set { t4aInvoiceDate = value; }
+            get { return T4aInvoiceDate; }
+            set { T4aInvoiceDate = value; }
         }
 
-        String lineSource;
-        public String LineSource
+        String LineSource;
+        public String lineSource
         {
-            get { return lineSource; }
-            set { lineSource = value; }
+            get { return LineSource; }
+            set { LineSource = value; }
         }
 
-        String approvalStatus;
-        public String ApprovalStatus
+        String ApprovalStatus;
+        public String approvalStatus
         {
-            get { return approvalStatus; }
-            set { approvalStatus = value; }
+            get { return ApprovalStatus; }
+            set { ApprovalStatus = value; }
         }
 
         //String poNumber;
@@ -346,46 +346,46 @@ namespace CASInterfaceService.Pages.Models
         //    set { poNumber = value; }
         //}
 
-        String poLine;
-        public String POLine
+        String POLine;
+        public String poLine
         {
-            get { return poLine; }
-            set { poLine = value; }
+            get { return POLine; }
+            set { POLine = value; }
         }
 
-        String poShipment;
-        public String POShipment
+        String POShipment;
+        public String poShipment
         {
-            get { return poShipment; }
-            set { poShipment = value; }
+            get { return POShipment; }
+            set { POShipment = value; }
         }
 
-        String poDistribution;
-        public String PODistribution
+        String PODistribution;
+        public String poDistribution
         {
-            get { return poDistribution; }
-            set { poDistribution = value; }
+            get { return PODistribution; }
+            set { PODistribution = value; }
         }
 
-        String trackAsAsset;
-        public String TrackAsAsset
+        String TrackAsAsset;
+        public String trackAsAsset
         {
-            get { return trackAsAsset; }
-            set { trackAsAsset = value; }
+            get { return TrackAsAsset; }
+            set { TrackAsAsset = value; }
         }
 
         String assetBook;
         public String AssetBook
         {
-            get { return assetBook; }
-            set { assetBook = value; }
+            get { return AssetBook; }
+            set { AssetBook = value; }
         }
 
-        String quantityInvoiced;
-        public String QuantityInvoiced
+        String QuantityInvoiced;
+        public String quantityInvoiced
         {
-            get { return quantityInvoiced; }
-            set { quantityInvoiced = value; }
+            get { return QuantityInvoiced; }
+            set { QuantityInvoiced = value; }
         }
 
         //String lineSource;
@@ -395,32 +395,32 @@ namespace CASInterfaceService.Pages.Models
         //    set { lineSource = value; }
         //}
 
-        DateTime expenditureItemDate; // Format: 21-FEB-2017
-        public DateTime ExpenditureItemDate
+        String ExpenditureItemDate; // Format: 21-FEB-2017
+        public String expenditureItemDate
         {
-            get { return expenditureItemDate; }
-            set { expenditureItemDate = value; }
+            get { return ExpenditureItemDate; }
+            set { ExpenditureItemDate = value; }
         }
 
-        String uom;
-        public String UOM
+        String UOM;
+        public String uom
         {
-            get { return uom; }
-            set { uom = value; }
+            get { return UOM; }
+            set { UOM = value; }
         }
 
-        Decimal unitPrice; // Format: 9(12).99
-        public Decimal UnitPrice
+        Decimal UnitPrice; // Format: 9(12).99
+        public Decimal unitPrice
         {
-            get { return unitPrice; }
-            set { unitPrice = value; }
+            get { return UnitPrice; }
+            set { UnitPrice = value; }
         }
 
-        String itemDescription;
-        public String ItemDescription
+        String ItemDescription;
+        public String itemDescription
         {
-            get { return itemDescription; }
-            set { itemDescription = value; }
+            get { return ItemDescription; }
+            set { ItemDescription = value; }
         }
 
         //String approvalStatus;

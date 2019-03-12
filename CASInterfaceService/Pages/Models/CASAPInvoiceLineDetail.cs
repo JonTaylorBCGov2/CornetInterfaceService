@@ -8,106 +8,106 @@ namespace CASInterfaceService.Pages.Models
 {
     public class InvoiceLineDetail:IValidatableObject
     {
-        Int32 invoiceLineNumber;
+        Int32 InvoiceLineNumber;
         [Required]
-        public Int32 InvoiceLineNumber
+        public Int32 invoiceLineNumber
         {
-            get { return invoiceLineNumber; }
-            set { invoiceLineNumber = value; }
+            get { return InvoiceLineNumber; }
+            set { InvoiceLineNumber = value; }
         }
 
-        String invoiceLineType;
+        String InvoiceLineType;
         [Required]
         [MaxLength(4, ErrorMessage = "invoiceLineType must be 'Item'")]
-        public String InvoiceLineType
+        public String invoiceLineType
         {
-            get { return invoiceLineType; }
-            set { invoiceLineType = "Item"; }
+            get { return InvoiceLineType; }
+            set { InvoiceLineType = "Item"; }
         }
 
-        String distributionTotal; // Must be NULL
-        public String DistributionTotal
+        String DistributionTotal; // Must be NULL
+        public String distributionTotal
         {
-            get { return distributionTotal; }
-            set { distributionTotal = null; }
+            get { return DistributionTotal; }
+            set { DistributionTotal = null; }
         }
 
-        String lineCode;
+        String LineCode;
         [Required]
         [MaxLength(2, ErrorMessage = "lineCode must be 'DR' or 'CR'")]
-        public String LineCode
+        public String lineCode
         {
-            get { return lineCode; }
-            set { lineCode = value; }
+            get { return LineCode; }
+            set { LineCode = value; }
         }
 
-        Decimal invoiceLineAmount; // Format: 9(12).99
+        Decimal InvoiceLineAmount; // Format: 9(12).99
         [Required]
-        public Decimal InvoiceLineAmount
+        public Decimal invoiceLineAmount
         {
-            get { return invoiceLineAmount; }
-            set { invoiceLineAmount = value; }
+            get { return InvoiceLineAmount; }
+            set { InvoiceLineAmount = value; }
         }
 
-        String defaultDistributionAccount;
+        String DefaultDistributionAccount;
         [Required]
         [MaxLength(40)]
-        public String DefaultDistributionAccount
+        public String defaultDistributionAccount
         {
-            get { return defaultDistributionAccount; }
-            set { defaultDistributionAccount = value; }
+            get { return DefaultDistributionAccount; }
+            set { DefaultDistributionAccount = value; }
         }
 
-        String description;
-        public String Description
+        String Description;
+        public String description
         {
-            get { return description; }
-            set { description = value; }
+            get { return Description; }
+            set { Description = value; }
         }
 
-        String taxClassificationCode;
+        String TaxClassificationCode;
         [MaxLength(30)]
-        public String TaxClassificationCode
+        public String taxClassificationCode
         {
-            get { return taxClassificationCode; }
-            set { taxClassificationCode = value; }
+            get { return TaxClassificationCode; }
+            set { TaxClassificationCode = value; }
         }
 
-        String distributionSupplier;
+        String DistributionSupplier;
         [MaxLength(30)]
-        public String DistributionSupplier
+        public String distributionSupplier
         {
-            get { return distributionSupplier; }
-            set { distributionSupplier = value; }
+            get { return DistributionSupplier; }
+            set { DistributionSupplier = value; }
         }
 
-        String info1;
+        String Info1;
         [MaxLength(25)]
-        public String Info1
+        public String info1
         {
-            get { return info1; }
-            set { info1 = value; }
+            get { return Info1; }
+            set { Info1 = value; }
         }
 
-        String info2;
+        String Info2;
         [MaxLength(10)]
-        public String Info2
+        public String info2
         {
-            get { return info2; }
-            set { info2 = value; }
+            get { return Info2; }
+            set { Info2 = value; }
         }
 
-        String info3;
+        String Info3;
         [MaxLength(8)]
-        public String Info3
+        public String info3
         {
-            get { return info3; }
-            set { info3 = value; }
+            get { return Info3; }
+            set { Info3 = value; }
         }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (!(LineCode == "DR" || LineCode == "CR"))
+            if (!(lineCode == "DR" || lineCode == "CR"))
             {
                 yield return new ValidationResult("Invalid LineCode");
             }
