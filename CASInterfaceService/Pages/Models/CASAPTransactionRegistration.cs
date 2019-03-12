@@ -64,9 +64,106 @@ namespace CASInterfaceService.Pages.Models
             return casAPTransactionList;
         }
 
-        public async void sendTransactionsToCAS(CASAPTransaction casapTransaction)
+        public string sendNewTransactionToCAS(CASAPTransaction casaptransaction)
+        {
+            string outputMessage = "";
+            try
+            {
+                Console.WriteLine("Starting sendTransactionsToCAS.");
+                HttpClientHandler handler = new HttpClientHandler();
+                Console.WriteLine("GET: + " + TokenURL);
+
+                HttpClient client = new HttpClient(handler);
+                var byteArray = Encoding.ASCII.GetBytes("Y3lia0NKOFBvYm1FdnIzcmtwbmtlQS4uOmYwTTR6bTJaaS1KSFdYdVQ2c3dnY2cuLg==");
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(string.Format("{0}:{1}", clientID, secret))));
+
+                var request = new HttpRequestMessage(HttpMethod.Post, TokenURL);
+
+                var formData = new List<KeyValuePair<string, string>>();
+                formData.Add(new KeyValuePair<string, string>("grant_type", "client_credentials"));
+
+                Console.WriteLine("Add credentials");
+                request.Content = new FormUrlEncodedContent(formData);
+                var response = client.SendAsync(request);
+
+                //response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                //Console.WriteLine("Response Received: " + response.StatusCode);
+                //response.EnsureSuccessStatusCode();
+                //string responseBody = response.Content.ReadAsStringAsync();
+                //Console.WriteLine("Response Body: " + responseBody);
+
+            }
+            catch (Exception e)
+            {
+
+            }
+            return outputMessage;
+        }
+
+        public async Task<string> sendTransactionsToCASShort(CASAPTransaction casapTransaction)
+        {
+            string outputMessage;
+
+            try
+            {
+                Console.WriteLine("Starting sendTransactionsToCAS.");
+
+                HttpClientHandler handler = new HttpClientHandler();
+                Console.WriteLine("GET: + " + TokenURL);
+
+                HttpClient client = new HttpClient(handler);
+                var byteArray = Encoding.ASCII.GetBytes("Y3lia0NKOFBvYm1FdnIzcmtwbmtlQS4uOmYwTTR6bTJaaS1KSFdYdVQ2c3dnY2cuLg==");
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(string.Format("{0}:{1}", clientID, secret))));
+
+                var request = new HttpRequestMessage(HttpMethod.Post, TokenURL);
+
+                var formData = new List<KeyValuePair<string, string>>();
+                formData.Add(new KeyValuePair<string, string>("grant_type", "client_credentials"));
+
+                Console.WriteLine("Add credentials");
+                request.Content = new FormUrlEncodedContent(formData);
+                var response = await client.SendAsync(request);
+
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                Console.WriteLine("Response Received: " + response.StatusCode);
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("Response Body: " + responseBody);
+
+                Console.WriteLine("Received token successfully, now to send package to CAS.");
+
+                using (var packageClient = new HttpClient())
+                {
+                    packageClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseBody);
+                    var jsonString = JsonConvert.SerializeObject(casapTransaction);
+                    var postContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                    HttpResponseMessage packageResult = await packageClient.PostAsync(URL, postContent);
+
+                    Console.WriteLine("This was the result: " + packageResult.StatusCode);
+                    outputMessage = Convert.ToString(packageResult.StatusCode);
+
+                    if (packageResult.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        Console.WriteLine("Ruh Roh, there was an error: " + packageResult.StatusCode);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                var errorContent = new StringContent(casapTransaction.ToString(), Encoding.UTF8, "application/json");
+                Console.WriteLine("Error in sendTransactionsToCASShort. ");// + client.BaseAddress.ToString() + errorContent + client + e.ToString());
+                throw e;
+            }
+            return outputMessage;
+
+        }
+
+        public async Task<string> sendTransactionsToCAS(CASAPTransaction casapTransaction)
         {
             //HttpClient client = new HttpClient();
+            string outputMessage;
 
             try
             {
@@ -138,12 +235,13 @@ namespace CASInterfaceService.Pages.Models
                 Console.WriteLine("Add credentials");
                 request.Content = new FormUrlEncodedContent(formData);
                 var response = await client.SendAsync(request);
+
                 //var response = await client.PostAsync(TokenURL, new StringContent(request));
 
                 //HttpResponseMessage response = await client.GetAsync(TokenURL);
                 //HttpContent content = new HttpContent();
                 //var stringContent = new StringContent();
-//                HttpResponseMessage response = await client.PostAsync(TokenURL, new StringContent(""));
+                //                HttpResponseMessage response = await client.PostAsync(TokenURL, new StringContent(""));
                 //HttpContent content = response.Content;
 
                 response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
@@ -291,6 +389,8 @@ namespace CASInterfaceService.Pages.Models
                     //   packageResult = packageClient.GetAsync(URL).Result;
 
                     Console.WriteLine("This was the result: " + packageResult.StatusCode);
+                    outputMessage = Convert.ToString(packageResult.StatusCode);
+
                     if (packageResult.StatusCode == HttpStatusCode.Unauthorized)
                             {
                         // Process the error
@@ -323,6 +423,8 @@ namespace CASInterfaceService.Pages.Models
                 Console.WriteLine("Error in sendTransactionsToCAS. ");// + client.BaseAddress.ToString() + errorContent + client + e.ToString());
                 throw e;
             }
+            return outputMessage;
+
         }
         public async void getTransactionsFromCAS()//CASAPTransaction casapTransaction)
         {
