@@ -47,6 +47,15 @@ namespace CASInterfaceService.Pages.Models
             set { SupplierNumber = value; }
         }
 
+        String SupplierSiteNumber;
+        [Required]
+        [MaxLength(3)]
+        public String supplierSiteNumber
+        {
+            get { return SupplierSiteNumber; }
+            set { SupplierSiteNumber = value; }
+        }
+
         String InvoiceDate; // Format: 21-FEB-2017
         [Required]
         public String invoiceDate
