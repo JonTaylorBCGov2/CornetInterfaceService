@@ -21,13 +21,22 @@ namespace CASInterfaceService.Pages.Controllers
     {
         private const string URL = "https://wsgw.test.jag.gov.bc.ca/victim/ords/cas/cfs/apinvoice/";
         private const string TokenURL = "https://wsgw.test.jag.gov.bc.ca/victim/ords/cas/oauth/token";
-        private const string clientID = "cybkCJ8PobmEvr3rkpnkeA..";
-        private const string secret = "f0M4zm2Zi-JHWXuT6swgcg..";
+        private string clientID = "";
+        private string secret = "";
 
         // POST: api/<controller>
         [HttpPost]
         public async Task<CASAPTransactionRegistrationReply> RegisterCASAPTransaction(CASAPTransaction casAPTransaction)
         {
+
+            // Get the header
+            var re = Request;
+            var headers = re.Headers;
+
+            // Get clientID and secret from header
+            secret = headers["secret"].ToString();
+            clientID = headers["clientID"].ToString();
+
             Console.WriteLine("In RegisterCASAPTransaction");
             CASAPTransactionRegistrationReply casregreply = new CASAPTransactionRegistrationReply();
             CASAPTransactionRegistration.getInstance().Add(casAPTransaction);
@@ -101,14 +110,7 @@ namespace CASInterfaceService.Pages.Controllers
             }
             casregreply.RegistrationStatus = outputMessage;
 
-
-
             return casregreply;
-        }
-
-        public async Task<string> newSendTransactionToCAS(CASAPTransaction casaptransaction)
-        {
-            return "Hello World!";
         }
 
         [HttpPost("InsertCASAPTransaction")]
