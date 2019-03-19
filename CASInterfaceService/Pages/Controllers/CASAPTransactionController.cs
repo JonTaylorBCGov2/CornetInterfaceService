@@ -124,8 +124,8 @@ namespace CASInterfaceService.Pages.Controllers
                 casregreply.RegistrationStatus = "Success";
 
                 // Now we must call CAS with this data
-                Task<string> outputResult = CASAPTransactionRegistration.getInstance().sendTransactionsToCAS(casAPTransaction);
-                casregreply.RegistrationStatus = Convert.ToString(outputResult);
+                //Task<string> outputResult = CASAPTransactionRegistration.getInstance().sendTransactionsToCAS(casAPTransaction);
+                //casregreply.RegistrationStatus = Convert.ToString(outputResult);
 
                 return Ok(casregreply);
             }
