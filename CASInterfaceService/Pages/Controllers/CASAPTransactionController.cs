@@ -59,7 +59,6 @@ namespace CASInterfaceService.Pages.Controllers
                 Console.WriteLine("GET: + " + TokenURL);
 
                 HttpClient client = new HttpClient(handler);
-                var byteArray = Encoding.ASCII.GetBytes("Y3lia0NKOFBvYm1FdnIzcmtwbmtlQS4uOmYwTTR6bTJaaS1KSFdYdVQ2c3dnY2cuLg==");
 
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(string.Format("{0}:{1}", clientID, secret))));
 
@@ -136,43 +135,5 @@ namespace CASInterfaceService.Pages.Controllers
             }
 
         }
-        //// POST: api/<controller>
-        //[HttpPost]
-        //public StudentRegistrationReply RegisterStudent(Student studentregd)
-        //{
-        //    Console.WriteLine("In registerStudent");
-        //    StudentRegistrationReply stdregreply = new StudentRegistrationReply();
-        //    StudentRegistration.getInstance().Add(studentregd);
-        //    stdregreply.Name = studentregd.Name;
-        //    stdregreply.Age = studentregd.Age;
-        //    stdregreply.RegistrationNumber = studentregd.RegistrationNumber;
-        //    stdregreply.RegistrationStatus = "Successful";
-        //    return stdregreply;
-        //}
-        //[HttpPost("InsertStudent")]
-        //public IActionResult InsertStudent(Student studentregd)
-        //{
-        //    Console.WriteLine("In registerStudent");
-        //    StudentRegistrationReply stdregreply = new StudentRegistrationReply();
-        //    StudentRegistration.getInstance().Add(studentregd);
-        //    stdregreply.Name = studentregd.Name;
-        //    stdregreply.Age = studentregd.Age;
-        //    stdregreply.RegistrationNumber = studentregd.RegistrationNumber;
-        //    stdregreply.RegistrationStatus = "Successful";
-        //    return Ok(stdregreply);
-        //}
-        //[Route("student/")]
-        //[HttpPost("AddStudent")]
-        //public JsonResult AddStudent(Student studentregd)
-        //{
-        //    Console.WriteLine("In registerStudent");
-        //    StudentRegistrationReply stdregreply = new StudentRegistrationReply();
-        //    StudentRegistration.getInstance().Add(studentregd);
-        //    stdregreply.Name = studentregd.Name;
-        //    stdregreply.Age = studentregd.Age;
-        //    stdregreply.RegistrationNumber = studentregd.RegistrationNumber;
-        //    stdregreply.RegistrationStatus = "Successful";
-        //    return Json(stdregreply);
-        //}
     }
 }
