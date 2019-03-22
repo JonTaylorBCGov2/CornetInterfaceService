@@ -26,7 +26,7 @@ namespace CASInterfaceService.Pages.Controllers
 
         // POST: api/<controller>
         [HttpPost]
-        public async Task<CASAPTransactionRegistrationReply> RegisterCASAPTransaction(CASAPTransaction casAPTransaction)
+        public async Task<JObject> RegisterCASAPTransaction(CASAPTransaction casAPTransaction)
         {
 
             // Get the header
@@ -107,9 +107,9 @@ namespace CASInterfaceService.Pages.Controllers
                 Console.WriteLine("Error in sendTransactionsToCASShort. ");// + client.BaseAddress.ToString() + errorContent + client + e.ToString());
                 throw e;
             }
-            casregreply.RegistrationStatus = outputMessage;
 
-            return casregreply;
+            var xjo = JObject.Parse(outputMessage);
+            return xjo;
         }
 
         [HttpPost("InsertCASAPTransaction")]
