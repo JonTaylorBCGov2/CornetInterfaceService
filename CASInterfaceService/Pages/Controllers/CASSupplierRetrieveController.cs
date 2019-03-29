@@ -19,7 +19,7 @@ namespace CASInterfaceService.Pages.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CASAPRetreiveController : Controller
+    public class CASSupplierRetreiveController : Controller
     {
         private const string URL = "https://wsgw.test.jag.gov.bc.ca/victim/ords/cas/cfs/apinvoice/";
         private const string TokenURL = "https://wsgw.test.jag.gov.bc.ca/victim/ords/cas/oauth/token";
@@ -27,18 +27,8 @@ namespace CASInterfaceService.Pages.Controllers
         private string secret = "";
 
         // GET: api/<controller>
-        [HttpGet]
-        public List<CASAPTransaction> GetAllTransactions()
-        {
-            return CASAPTransactionRegistration.getInstance().getAllCASAPTransaction();
-        }
-        [HttpGet("GetAllTransactionRecords")]
-        public JsonResult GetAllTransactionRecords()
-        {
-            return Json(CASAPTransactionRegistration.getInstance().getAllCASAPTransaction());
-        }
         [HttpPost("GetTransactionRecords")]
-        public async Task<JObject> GetTransactionRecords(CASAPQuery casAPQuery)
+        public async Task<JObject> GetTransactionRecords(CASSupplierQuery casSupplierQuery)
         {
             // Get the header
             var re = Request;
@@ -50,7 +40,7 @@ namespace CASInterfaceService.Pages.Controllers
 
             Console.WriteLine("In RegisterCASAPTransaction");
             CASAPTransactionRegistrationReply casregreply = new CASAPTransactionRegistrationReply();
-            CASAPQueryRegistration.getInstance().Add(casAPQuery);
+            CASSupplierQueryRegistration.getInstance().Add(casSupplierQuery);
 
             try
             {
@@ -88,46 +78,47 @@ namespace CASInterfaceService.Pages.Controllers
                 using (var packageClient = new HttpClient())
                 {
                     packageClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseToken);
-                    var jsonString = JsonConvert.SerializeObject(casAPQuery);
+                    var jsonString = JsonConvert.SerializeObject(casSupplierQuery);
                     HttpContent postContent = new StringContent(jsonString);
 
-                    // Submit GET response to CAS
-                    HttpResponseMessage packageResult = await packageClient.GetAsync(URL + casAPQuery.invoiceNumber + "/" + casAPQuery.supplierNumber + "/" + casAPQuery.supplierSiteNumber);
+                    HttpResponseMessage packageResult = await packageClient.GetAsync(URL);// + casSupplierQuery.invoiceNumber + "/" + casSupplierQuery.supplierNumber + "/" + casSupplierQuery.supplierSiteNumber);
 
-                    // Segregate JSON response from CAS
+                    // Put token alone in responseToken
                     string xresponseBody = await packageResult.Content.ReadAsStringAsync();
                     var xjo = JObject.Parse(xresponseBody);
 
-                    // Return JSON response from CAS
-                    Console.WriteLine("Successfully found invoice: " + casAPQuery.invoiceNumber);
                     return xjo;
                 }
             }
             catch (Exception e)
             {
-                if (e.HResult == -2146233088)
-                { // Handle error where invoice number / Supplier / Site does not exist
-                    Console.WriteLine("Error in GetTransactionRecords. Invoice: " + casAPQuery.invoiceNumber + ". Supplier: " + casAPQuery.supplierNumber + ". Site: " + casAPQuery.supplierSiteNumber + ". Invoice/Supplier/Site does not exist.");
-                    dynamic errorObject = new JObject();
-                    errorObject.invoice_number = casAPQuery.invoiceNumber;
-                    errorObject.invoice_status = "Not Found";
-                    errorObject.payment_status = "Not Found";
-                    errorObject.payment_number = " ";
-                    errorObject.payment_date = " ";
-                    return errorObject;
-                }
-                else
-                { // Handle all other errors
-                    var errorContent = new StringContent(casAPQuery.ToString(), Encoding.UTF8, "application/json");
-                    Console.WriteLine("Error in GetTransactionRecords. Invoice: " + casAPQuery.invoiceNumber + ". " + e.Message);
-                    dynamic errorObject = new JObject();
-                    errorObject.invoice_number = casAPQuery.invoiceNumber;
-                    errorObject.invoice_status = e.Message;
-                    errorObject.payment_status = "Generic Error";
-                    errorObject.payment_number = " ";
-                    errorObject.payment_date = " ";
-                    return errorObject;
-                }
+                var errorContent = new StringContent(casSupplierQuery.ToString(), Encoding.UTF8, "application/json");
+                Console.WriteLine("Error in sendTransactionsToCASShort. ");// + client.BaseAddress.ToString() + errorContent + client + e.ToString());
+                dynamic errorObject = new JObject();
+                errorObject.message_UUID = "00000000-0000-0000-0000-000000000000";
+                errorObject.supplier_number = casSupplierQuery.supplierNumber;
+                errorObject.supplier_name = casSupplierQuery.supplierName;
+                errorObject.sin = "000000000";
+                errorObject.business_number = null;
+                errorObject.supplier_status = null;
+                errorObject.supplier_last_updated = null;
+                errorObject.supplier_site_code = casSupplierQuery.supplierSiteNumber;
+                errorObject.address_line_1 = null;
+                errorObject.address_line_2 = null;
+                errorObject.address_line_3 = null;
+                errorObject.city = null;
+                errorObject.province = null;
+                errorObject.country = null;
+                errorObject.postal_code = null;
+                errorObject.email_address = null;
+                errorObject.account_number = null;
+                errorObject.branch_number = null;
+                errorObject.bank_number = null;
+                errorObject.eft_advice_pref = null;
+                errorObject.provider_id = null;
+                errorObject.site_status = "Error: " + e.Message;
+                errorObject.site_last_updated = null;
+                return errorObject;
             }
         }
 
@@ -142,7 +133,7 @@ namespace CASInterfaceService.Pages.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class CASAPRetrieveController : Controller
+    public class CASSupplierRetrieveController : Controller
     {
         // GET: api/<controller>
         [HttpGet]

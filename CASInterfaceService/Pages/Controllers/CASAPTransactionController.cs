@@ -104,11 +104,15 @@ namespace CASInterfaceService.Pages.Controllers
             catch (Exception e)
             {
                 var errorContent = new StringContent(casAPTransaction.ToString(), Encoding.UTF8, "application/json");
-                Console.WriteLine("Error in sendTransactionsToCASShort. ");// + client.BaseAddress.ToString() + errorContent + client + e.ToString());
-                throw e;
+                Console.WriteLine("Error in RegisterCASAPTransaction. Invoice: " + casAPTransaction.invoiceNumber);
+                dynamic errorObject = new JObject();
+                errorObject.invoice_number = null;
+                errorObject.CAS_Returned_Messages = "Generic Error: " + e.Message;
+                return errorObject;
             }
 
             var xjo = JObject.Parse(outputMessage);
+            Console.WriteLine("Successfully sent invoice: " + casAPTransaction.invoiceNumber);
             return xjo;
         }
 

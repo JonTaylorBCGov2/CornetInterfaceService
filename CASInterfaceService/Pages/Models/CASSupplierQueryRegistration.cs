@@ -25,6 +25,11 @@ namespace CASInterfaceService.Pages.Models
             }
         }
 
+        public void Add(CASSupplierQuery casSupplierTransaction)
+        {
+            casSupplierQueryList.Add(casSupplierTransaction);
+        }
+
         public List<CASSupplierQuery> getCASSupplierQuery()
         {
             return casSupplierQueryList;
