@@ -22,8 +22,8 @@ namespace CASInterfaceService.Pages.Controllers
     [ApiController]
     public class CASSupplierRetreiveController : Controller
     {
-        private string URL = "";// https://wsgw.test.jag.gov.bc.ca/victim/ords/cas/cfs/apinvoice/";
-        private string TokenURL = "";// https://wsgw.test.jag.gov.bc.ca/victim/ords/cas/oauth/token";
+        private string URL = "";
+        private string TokenURL = "";
         private string clientID = "";
         private string secret = "";
 
@@ -35,12 +35,12 @@ namespace CASInterfaceService.Pages.Controllers
             var re = Request;
             var headers = re.Headers;
 
+            // Get secret information
             Console.WriteLine("Get Secret information.");
             var builder = new ConfigurationBuilder()
                 .AddEnvironmentVariables()
                 .AddUserSecrets<Program>(); // must also define a project guid for secrets in the .cspro – add tag <UserSecretsId> containing a guid
             var Configuration = builder.Build();
-
             URL = Configuration["CAS_API_URI"] + "victim/ords/cas/cfs/apinvoice/"; // CAS AP URL
             TokenURL = Configuration["CAS_API_URI"] + "victim/ords/cas/oauth/token"; // CAS AP Token URL
 
