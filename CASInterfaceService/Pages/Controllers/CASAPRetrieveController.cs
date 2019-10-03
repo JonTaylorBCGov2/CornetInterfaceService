@@ -65,7 +65,7 @@ namespace CASInterfaceService.Pages.Controllers
                     .AddUserSecrets<Program>(); // must also define a project guid for secrets in the .cspro – add tag <UserSecretsId> containing a guid
                 var Configuration = builder.Build();
                 URL = Configuration["CAS_API_URI"] + "victim/ords/cas/cfs/apinvoice/"; // CAS AP URL
-                TokenURL = Configuration["CAS_API_URI"] + "victim/ords/cas/oauth/token"; // CAS AP Token URL
+                TokenURL = Configuration["CAS_API_URI"] + "victim/ords/casords/oauth/token"; // CAS AP Token URL
 
                 HttpClientHandler handler = new HttpClientHandler();
                 Console.WriteLine("GET: + " + TokenURL);
