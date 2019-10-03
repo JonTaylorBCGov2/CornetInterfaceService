@@ -56,7 +56,7 @@ namespace CASInterfaceService.Pages.Controllers
             try
             {
                 // Start by getting token
-                Console.WriteLine("Starting sendTransactionsToCAS.");
+                Console.WriteLine("Starting sendTransactionsToCAS (CASAPRetreiveController).");
 
                 // Get secret information
                 Console.WriteLine("Get Secret information.");
@@ -64,8 +64,8 @@ namespace CASInterfaceService.Pages.Controllers
                     .AddEnvironmentVariables()
                     .AddUserSecrets<Program>(); // must also define a project guid for secrets in the .cspro – add tag <UserSecretsId> containing a guid
                 var Configuration = builder.Build();
-                URL = Configuration["CAS_API_URI"] + "victim/ords/cas/cfs/apinvoice/"; // CAS AP URL
-                TokenURL = Configuration["CAS_API_URI"] + "victim/ords/casords/oauth/token"; // CAS AP Token URL
+                URL = Configuration["CAS_API_URI"] + "cfs/apinvoice/"; // CAS AP URL
+                TokenURL = Configuration["CAS_API_URI"] + "oauth/token"; // CAS AP Token URL
 
                 HttpClientHandler handler = new HttpClientHandler();
                 Console.WriteLine("GET: + " + TokenURL);
