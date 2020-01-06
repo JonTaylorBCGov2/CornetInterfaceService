@@ -35,7 +35,7 @@ namespace CASInterfaceService.Pages.Controllers
             var headers = re.Headers;
 
             // Get secret information
-            Console.WriteLine("Get Secret information.");
+            Console.WriteLine(DateTime.Now + " Get Secret information.");
             var builder = new ConfigurationBuilder()
                 .AddEnvironmentVariables()
                 .AddUserSecrets<Program>(); // must also define a project guid for secrets in the .cspro – add tag <UserSecretsId> containing a guid
@@ -47,7 +47,7 @@ namespace CASInterfaceService.Pages.Controllers
             secret = headers["secret"].ToString();
             clientID = headers["clientID"].ToString();
 
-            Console.WriteLine("In RegisterCASAPTransaction");
+            Console.WriteLine(DateTime.Now + " In RegisterCASAPTransaction");
             CASAPTransactionRegistrationReply casregreply = new CASAPTransactionRegistrationReply();
             CASAPTransactionRegistration.getInstance().Add(casAPTransaction);
             //casregreply.RegistrationStatus = "Success";
@@ -63,10 +63,10 @@ namespace CASInterfaceService.Pages.Controllers
             try
             {
                 // Start by getting token
-                Console.WriteLine("Starting sendTransactionsToCAS (CASAPTransactionController).");
+                Console.WriteLine(DateTime.Now + " Starting sendTransactionsToCAS (CASAPTransactionController).");
 
                 HttpClientHandler handler = new HttpClientHandler();
-                Console.WriteLine("GET: + " + TokenURL);
+                Console.WriteLine(DateTime.Now + " GET: + " + TokenURL);
 
                 HttpClient client = new HttpClient(handler);
 
@@ -82,7 +82,7 @@ namespace CASInterfaceService.Pages.Controllers
                 var response = await client.SendAsync(request);
 
                 response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                Console.WriteLine("Response Received: " + response.StatusCode);
+                Console.WriteLine(DateTime.Now + " Response Received: " + response.StatusCode);
                 response.EnsureSuccessStatusCode();
 
                 // Put token alone in responseToken
@@ -90,7 +90,7 @@ namespace CASInterfaceService.Pages.Controllers
                 var jo = JObject.Parse(responseBody);
                 string responseToken = jo["access_token"].ToString();
 
-                Console.WriteLine("Received token successfully, now to send package to CAS.");
+                Console.WriteLine(DateTime.Now + " Received token successfully, now to send package to CAS.");
 
                 // Token received, now send package using token
                 using (var packageClient = new HttpClient())
@@ -101,20 +101,20 @@ namespace CASInterfaceService.Pages.Controllers
                     HttpContent postContent = new StringContent(jsonString);
                     HttpResponseMessage packageResult = await packageClient.PostAsync(URL, postContent);
 
-                    Console.WriteLine("This was the result: " + packageResult.StatusCode);
+                    Console.WriteLine(DateTime.Now + " This was the result: " + packageResult.StatusCode);
                     //outputMessage = Convert.ToString(packageResult.StatusCode);
                     outputMessage = Convert.ToString(packageResult.Content.ReadAsStringAsync().Result);
                     
                     if (packageResult.StatusCode == HttpStatusCode.Unauthorized)
                     {
-                        Console.WriteLine("Ruh Roh, there was an error: " + packageResult.StatusCode);
+                        Console.WriteLine(DateTime.Now + " Ruh Roh, there was an error: " + packageResult.StatusCode);
                     }
                 }
             }
             catch (Exception e)
             {
                 var errorContent = new StringContent(casAPTransaction.ToString(), Encoding.UTF8, "application/json");
-                Console.WriteLine("Error in RegisterCASAPTransaction. Invoice: " + casAPTransaction.invoiceNumber);
+                Console.WriteLine(DateTime.Now + " Error in RegisterCASAPTransaction. Invoice: " + casAPTransaction.invoiceNumber);
                 dynamic errorObject = new JObject();
                 errorObject.invoice_number = null;
                 errorObject.CAS_Returned_Messages = "Generic Error: " + e.Message;
@@ -122,7 +122,7 @@ namespace CASInterfaceService.Pages.Controllers
             }
 
             var xjo = JObject.Parse(outputMessage);
-            Console.WriteLine("Successfully sent invoice: " + casAPTransaction.invoiceNumber);
+            Console.WriteLine(DateTime.Now + " Successfully sent invoice: " + casAPTransaction.invoiceNumber);
             return xjo;
         }
 
@@ -131,7 +131,7 @@ namespace CASInterfaceService.Pages.Controllers
         {
             try
             {
-                Console.WriteLine("In InsertCASAPTransaction");
+                Console.WriteLine(DateTime.Now + " In InsertCASAPTransaction");
                 CASAPTransactionRegistrationReply casregreply = new CASAPTransactionRegistrationReply();
                 CASAPTransactionRegistration.getInstance().Add(casAPTransaction);
                 casregreply.RegistrationStatus = "Success";
@@ -144,7 +144,7 @@ namespace CASInterfaceService.Pages.Controllers
             }
             catch(Exception e)
             {
-                Console.WriteLine("Error in InsertCASAPTransaction. " + e.ToString());
+                Console.WriteLine(DateTime.Now + " Error in InsertCASAPTransaction. " + e.ToString());
                 return StatusCode(e.HResult);
             }
 
