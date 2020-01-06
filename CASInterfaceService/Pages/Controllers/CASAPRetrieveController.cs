@@ -49,14 +49,14 @@ namespace CASInterfaceService.Pages.Controllers
             secret = headers["secret"].ToString();
             clientID = headers["clientID"].ToString();
 
-            Console.WriteLine("In RegisterCASAPTransaction");
+            Console.WriteLine(DateTime.Now + " In RegisterCASAPTransaction");
             CASAPTransactionRegistrationReply casregreply = new CASAPTransactionRegistrationReply();
             CASAPQueryRegistration.getInstance().Add(casAPQuery);
 
             try
             {
                 // Start by getting token
-                Console.WriteLine("Starting sendTransactionsToCAS (CASAPRetreiveController).");
+                Console.WriteLine(DateTime.Now + " Starting sendTransactionsToCAS (CASAPRetreiveController).");
 
                 // Get secret information
                 Console.WriteLine("Get Secret information.");
@@ -68,7 +68,7 @@ namespace CASInterfaceService.Pages.Controllers
                 TokenURL = Configuration["CAS_API_URI"] + "oauth/token"; // CAS AP Token URL
 
                 HttpClientHandler handler = new HttpClientHandler();
-                Console.WriteLine("GET: + " + TokenURL);
+                Console.WriteLine(DateTime.Now + " GET: + " + TokenURL);
 
                 HttpClient client = new HttpClient(handler);
 
@@ -79,7 +79,7 @@ namespace CASInterfaceService.Pages.Controllers
                 var formData = new List<KeyValuePair<string, string>>();
                 formData.Add(new KeyValuePair<string, string>("grant_type", "client_credentials"));
 
-                Console.WriteLine("Add credentials");
+                Console.WriteLine(DateTime.Now + " Add credentials");
                 request.Content = new FormUrlEncodedContent(formData);
                 var response = await client.SendAsync(request);
 
@@ -92,7 +92,7 @@ namespace CASInterfaceService.Pages.Controllers
                 var jo = JObject.Parse(responseBody);
                 string responseToken = jo["access_token"].ToString();
 
-                Console.WriteLine("Received token successfully, now to send request to CAS.");
+                Console.WriteLine(DateTime.Now + " Received token successfully, now to send request to CAS.");
 
                 // Token received, now send package using token
                 using (var packageClient = new HttpClient())
@@ -109,7 +109,7 @@ namespace CASInterfaceService.Pages.Controllers
                     var xjo = JObject.Parse(xresponseBody);
 
                     // Return JSON response from CAS
-                    Console.WriteLine("Successfully found invoice: " + casAPQuery.invoiceNumber);
+                    Console.WriteLine(DateTime.Now + " Successfully found invoice: " + casAPQuery.invoiceNumber);
                     return xjo;
                 }
             }
@@ -117,7 +117,7 @@ namespace CASInterfaceService.Pages.Controllers
             {
                 if (e.HResult == -2146233088)
                 { // Handle error where invoice number / Supplier / Site does not exist
-                    Console.WriteLine("Error in GetTransactionRecords. Invoice: " + casAPQuery.invoiceNumber + ". Supplier: " + casAPQuery.supplierNumber + ". Site: " + casAPQuery.supplierSiteNumber + ". Invoice/Supplier/Site does not exist.");
+                    Console.WriteLine(DateTime.Now + " Error in GetTransactionRecords. Invoice: " + casAPQuery.invoiceNumber + ". Supplier: " + casAPQuery.supplierNumber + ". Site: " + casAPQuery.supplierSiteNumber + ". Invoice/Supplier/Site does not exist.");
                     dynamic errorObject = new JObject();
                     errorObject.invoice_number = casAPQuery.invoiceNumber;
                     errorObject.invoice_status = "Not Found";
@@ -129,7 +129,7 @@ namespace CASInterfaceService.Pages.Controllers
                 else
                 { // Handle all other errors
                     var errorContent = new StringContent(casAPQuery.ToString(), Encoding.UTF8, "application/json");
-                    Console.WriteLine("Error in GetTransactionRecords. Invoice: " + casAPQuery.invoiceNumber + ". " + e.Message);
+                    Console.WriteLine(DateTime.Now + " Error in GetTransactionRecords. Invoice: " + casAPQuery.invoiceNumber + ". " + e.Message);
                     dynamic errorObject = new JObject();
                     errorObject.invoice_number = casAPQuery.invoiceNumber;
                     errorObject.invoice_status = e.Message;

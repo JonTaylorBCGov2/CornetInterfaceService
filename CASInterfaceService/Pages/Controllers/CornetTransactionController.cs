@@ -14,7 +14,7 @@ namespace CASInterfaceService.Pages.Controllers
         [HttpPost]
         public CornetTransactionRegistrationReply RegisterCornetTransaction(CornetTransaction cornetTransaction)
         {
-            Console.WriteLine("In RegisterCornetTransaction");
+            Console.WriteLine(DateTime.Now + " In RegisterCornetTransaction");
             CornetTransactionRegistrationReply cornetregreply = new CornetTransactionRegistrationReply();
             CornetTransactionRegistration.getInstance().Add(cornetTransaction);
             cornetregreply.ResponseMessage = "Success";
@@ -28,7 +28,7 @@ namespace CASInterfaceService.Pages.Controllers
         {
             try
             {
-                Console.WriteLine("In InsertCornetTransaction");
+                Console.WriteLine(DateTime.Now + " In InsertCornetTransaction");
                 CornetTransactionRegistrationReply casregreply = new CornetTransactionRegistrationReply();
                 CornetTransactionRegistration.getInstance().Add(cornetTransaction);
                 casregreply.ResponseMessage = "Success";
@@ -37,7 +37,7 @@ namespace CASInterfaceService.Pages.Controllers
             }
             catch(Exception e)
             {
-                Console.WriteLine("Error in InsertCornetTransaction. " + e.ToString());
+                Console.WriteLine(DateTime.Now + " Error in InsertCornetTransaction. " + e.ToString());
                 return StatusCode(e.HResult);
             }
 
