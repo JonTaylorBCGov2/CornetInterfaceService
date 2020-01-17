@@ -150,6 +150,7 @@ namespace CASInterfaceService.Pages.Controllers
         }
     }
 
+    // BELIEVE THESE ARE NO LONGER USED
     [Route("api/[controller]")]
     [ApiController]
     public class CASAPRetrieveController : Controller
@@ -159,7 +160,7 @@ namespace CASInterfaceService.Pages.Controllers
         public List<CASAPTransaction> GetAllTransactions()
         {
             // Call CAS to get the proper data
-            CASAPTransactionRegistration.getInstance().getTransactionsFromCAS();
+            //CASAPTransactionRegistration.getInstance().getTransactionsFromCAS();
 
             return CASAPTransactionRegistration.getInstance().getAllCASAPTransaction();
         }
@@ -167,7 +168,7 @@ namespace CASInterfaceService.Pages.Controllers
         public JsonResult GetAllTransactionRecords()
         {
             // Call CAS to get the proper data
-            CASAPTransactionRegistration.getInstance().getTransactionsFromCAS();
+            //CASAPTransactionRegistration.getInstance().getTransactionsFromCAS();
 
             return Json(CASAPTransactionRegistration.getInstance().getAllCASAPTransaction());
         }
@@ -175,7 +176,7 @@ namespace CASInterfaceService.Pages.Controllers
         public JsonResult GetTransactionUpdateRecords()
         {
             // Call CAS to get the proper data
-            CASAPTransactionRegistration.getInstance().getTransactionsFromCAS();
+            //CASAPTransactionRegistration.getInstance().getTransactionsFromCAS();
 
             return Json(CASAPTransactionRegistration.getInstance().getAllCASAPTransaction());
 

@@ -20,6 +20,14 @@ namespace CASInterfaceService.Pages.Controllers
             cornetregreply.ResponseMessage = "Success";
             cornetregreply.ResponseCode = "1";
 
+            // Responses as follows:
+            // 200 - Status OK - Automatically Done
+            // 400 - Bad Request (Malformed JSON) - Automatically Done
+            // 500 - Internal Server Error (Something wrong on our end)
+            // 201 - If anything is being created on our end based on the notification sent
+            // This next line is just a sample of how to do it:
+            //this.HttpContext.Response.StatusCode = 444;
+
             return cornetregreply;
         }
 

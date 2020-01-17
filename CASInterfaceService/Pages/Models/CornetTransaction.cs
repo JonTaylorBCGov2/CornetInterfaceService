@@ -1,42 +1,48 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace CASInterfaceService.Pages.Models
 {
     public class CornetTransaction
     {
-        String csNumber;
-        public String CSNumber
+        public Int64 EventMessageID;
+        [Required]
+        public Int64 event_message_id
         {
-            get { return csNumber; }
-            set { csNumber = value; }
+            get { return EventMessageID; }
+            set { EventMessageID = value; }
         }
 
-        DateTime eventDateTimestamp;
-        public DateTime EventDateTimestamp
+        String TargetSystemCD;
+        [Required]
+        public String target_system_cd
         {
-            get { return eventDateTimestamp; }
-            set { eventDateTimestamp = value; }
+            get { return TargetSystemCD; }
+            set { TargetSystemCD = value; }
         }
 
-        String operationCode;
-        public String OperationCode
+        String MessageEventTypeCD;
+        [Required]
+        public String message_event_type_cd
         {
-            get { return operationCode; }
-            set { operationCode = value; }
+            get { return MessageEventTypeCD; }
+            set { MessageEventTypeCD = value; }
         }
 
-        String eventType;
-        public String EventType
+        DateTime EventDTM;
+        [Required]
+        public DateTime event_dtm
         {
-            get { return eventType; }
-            set { eventType = value; }
+            get { return EventDTM; }
+            set { EventDTM = value; }
         }
 
-        String eventData;
-        public String EventData
+        List<CornetTransactionEventData> EventData;
+        public List<CornetTransactionEventData> event_data
         {
-            get { return eventData; }
-            set { eventData = value; }
+            get { return EventData; }
+            set { EventData = value; }
         }
     }
 }
