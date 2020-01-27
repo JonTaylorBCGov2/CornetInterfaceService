@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gov.Cscp.VictimServices.Public.JsonObjects;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
