@@ -46,9 +46,11 @@ namespace CASInterfaceService.Pages.Controllers
             Console.WriteLine(DateTime.Now + " In RegisterCornetTransaction");
             CornetTransactionRegistrationReply cornetregreply = new CornetTransactionRegistrationReply();
             CornetTransactionRegistration.getInstance().Add(cornetTransaction);
+            Console.WriteLine(DateTime.Now + " Received data from Cornet");
 
             var t = Task.Run(() => CallDynamicsWithCornetData(_configuration, cornetTransaction));
             t.Wait();
+            Console.WriteLine(DateTime.Now + " Sent data to Dynamics");
 
             JObject tempJson = JObject.Parse(t.Result);
             CornetDynamicsReply replyJson = new CornetDynamicsReply();
@@ -57,11 +59,13 @@ namespace CASInterfaceService.Pages.Controllers
             {
                 cornetregreply.ResponseMessage = "Success";
                 cornetregreply.ResponseCode = null;// t.Result;
+                Console.WriteLine(DateTime.Now + " Response Success");
             }
             else
             {
                 cornetregreply.ResponseMessage = "Failure";
                 cornetregreply.ResponseCode = t.Result;
+                Console.WriteLine(DateTime.Now + " Response Fail");
             }
 
             // Responses as follows:
@@ -72,6 +76,7 @@ namespace CASInterfaceService.Pages.Controllers
             // This next line is just a sample of how to do it:
             //this.HttpContext.Response.StatusCode = 444;
 
+            Console.WriteLine(DateTime.Now + " Exit RegisterCornetTransaction");
             return cornetregreply;
 
         }
