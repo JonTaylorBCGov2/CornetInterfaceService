@@ -83,6 +83,7 @@ namespace CASInterfaceService.Pages.Controllers
 
         private static async Task<string> CallDynamicsWithCornetData(IConfiguration configuration, CornetTransaction model)
         {
+            Console.WriteLine(DateTime.Now + " In CallDynamicsWithCornetData");
             HttpClient httpClient = null;
             try
             {
@@ -94,7 +95,9 @@ namespace CASInterfaceService.Pages.Controllers
 
                 // Get results into the tuple
                 var endpointAction = "vsd_CreateCORNETNotifications";
+                Console.WriteLine(DateTime.Now + " Set endpoint " + endpointAction);
                 var tuple = await GetDynamicsHttpClientNew(configuration, cornetJson, endpointAction);
+                Console.WriteLine(DateTime.Now + " Got result from Dynamics");
 
                 string tempResult = tuple.Item1.ToString();
 
@@ -117,6 +120,7 @@ namespace CASInterfaceService.Pages.Controllers
                     dynamicsResponse.odatacontext = dynamicsResponse.Result;
                 }
 
+                Console.WriteLine(DateTime.Now + " Return results from Dynamics");
                 return dynamicsResponse.odatacontext;
 
             }
