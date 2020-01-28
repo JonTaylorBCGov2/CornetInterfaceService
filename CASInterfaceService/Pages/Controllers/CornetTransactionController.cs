@@ -133,11 +133,12 @@ namespace CASInterfaceService.Pages.Controllers
 
         static async Task<Tuple<int, HttpResponseMessage, string>> GetDynamicsHttpClientNew(IConfiguration configuration, String model, String endPointName)
         {
-
+            Console.WriteLine(DateTime.Now + " In GetDynamicsHttpClientNew");
             var builder = new ConfigurationBuilder()
                 .AddEnvironmentVariables()
                 .AddUserSecrets<Program>(); // must also define a project guid for secrets in the .cspro – add tag <UserSecretsId> containing a guid
             var Configuration = builder.Build();
+            Console.WriteLine(DateTime.Now + " Build Configuration");
 
             string dynamicsOdataUri = Configuration["DYNAMICS_ODATA_URI"]; // Dynamics ODATA endpoint
             string dynamicsJobName = endPointName;// Configuration["DYNAMICS_JOB_NAME"]; // Dynamics Job Name
@@ -164,11 +165,13 @@ namespace CASInterfaceService.Pages.Controllers
             // API Gateway to NTLM user.  This is used in v8 environments.  Note that the SSG Username and password are not the same as the NTLM user.
             string ssgUsername = Configuration["SSG_USERNAME"];  // BASIC authentication username
             string ssgPassword = Configuration["SSG_PASSWORD"];  // BASIC authentication password
+            Console.WriteLine(DateTime.Now + " Variables have been set");
 
             ServiceClientCredentials serviceClientCredentials = null;
             if (!string.IsNullOrEmpty(appRegistrationClientId) && !string.IsNullOrEmpty(appRegistrationClientKey) && !string.IsNullOrEmpty(serverAppIdUri) && !string.IsNullOrEmpty(aadTenantId))
             // Cloud authentication - using an App Registration's client ID, client key.  Add the App Registration to Dynamics as an Application User.
             {
+                Console.WriteLine(DateTime.Now + " Trying Cloud Authentication");
                 var authenticationContext = new AuthenticationContext(
                 "https://login.windows.net/" + aadTenantId);
                 ClientCredential clientCredential = new ClientCredential(appRegistrationClientId, appRegistrationClientKey);
@@ -186,6 +189,7 @@ namespace CASInterfaceService.Pages.Controllers
                         !string.IsNullOrEmpty(serviceAccountPassword))
             // ADFS 2016 authentication - using an Application Group Client ID and Secret, plus service account credentials.
             {
+                Console.WriteLine(DateTime.Now + " Trying ADFS Authentication");
                 // create a new HTTP client that is just used to get a token.
                 var stsClient = new HttpClient();
 
@@ -210,9 +214,12 @@ namespace CASInterfaceService.Pages.Controllers
                     new KeyValuePair<string, string>("grant_type", "password")
                  };
 
+                Console.WriteLine(DateTime.Now + " Set ADFS variables and headers");
+
                 // This will also set the content type of the request
                 var content = new FormUrlEncodedContent(pairs);
                 // send the request to the ADFS server
+                Console.WriteLine(DateTime.Now + " About to send request to ADFS");
                 var _httpResponse = stsClient.PostAsync(adfsOauth2Uri, content).GetAwaiter().GetResult();
                 var _responseContent = _httpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                 // response should be in JSON format.
@@ -220,6 +227,7 @@ namespace CASInterfaceService.Pages.Controllers
                 {
                     Dictionary<string, string> result = JsonConvert.DeserializeObject<Dictionary<string, string>>(_responseContent);
                     string token = result["access_token"];
+                    Console.WriteLine(DateTime.Now + " Got a token");
                     // set the bearer token.
                     serviceClientCredentials = new TokenCredentials(token);
 
@@ -243,21 +251,25 @@ namespace CASInterfaceService.Pages.Controllers
                     //client.DefaultRequestHeaders.Add("Content-Type", "application/json; charset=utf-8");
 
                     string url = dynamicsOdataUri + dynamicsJobName;
+                    Console.WriteLine(DateTime.Now + " Set full URL to speak to Dynamics: " + url);
 
                     HttpRequestMessage _httpRequest = new HttpRequestMessage(HttpMethod.Post, url);
                     _httpRequest.Content = new StringContent(model, Encoding.UTF8, "application/json");
                     //_httpRequest.Content = new StringContent(System.IO.File.ReadAllText(@"C:\Temp\VSD-RestSampleData3.txt"), Encoding.UTF8, "application/json");
+                    Console.WriteLine(DateTime.Now + " Got HTTP Request ready");
 
                     var _httpResponse2 = await client.SendAsync(_httpRequest);
                     HttpStatusCode _statusCode = _httpResponse2.StatusCode;
 
                     var _responseString = _httpResponse2.ToString();
+                    Console.WriteLine(DateTime.Now + " Got HTTP Response: " + _responseString);
                     var _responseContent2 = await _httpResponse2.Content.ReadAsStringAsync();
 
                     Console.Out.WriteLine(model);
                     Console.Out.WriteLine(_responseString);
                     Console.Out.WriteLine(_responseContent2);
 
+                    Console.WriteLine(DateTime.Now + " Exit GetDynamicsHttpClientNew");
                     return new Tuple<int, HttpResponseMessage, string>((int)_statusCode, _httpResponse2, _responseContent2);
                     // End of scheduled task
                 }
