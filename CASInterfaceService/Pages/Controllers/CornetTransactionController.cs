@@ -265,9 +265,9 @@ namespace CASInterfaceService.Pages.Controllers
                     Console.WriteLine(DateTime.Now + " Got HTTP Response");//: " + _responseString);
                     var _responseContent2 = await _httpResponse2.Content.ReadAsStringAsync();
 
-                    Console.Out.WriteLine(model);
-                    Console.Out.WriteLine(_responseString);
-                    Console.Out.WriteLine(_responseContent2);
+                    Console.Out.WriteLine(DateTime.Now + " model: " + model);
+                    Console.Out.WriteLine(DateTime.Now + " responseString: " + _responseString);
+                    Console.Out.WriteLine(DateTime.Now + "  responseContent2: " + _responseContent2);
 
                     Console.WriteLine(DateTime.Now + " Exit GetDynamicsHttpClientNew");
                     return new Tuple<int, HttpResponseMessage, string>((int)_statusCode, _httpResponse2, _responseContent2);
