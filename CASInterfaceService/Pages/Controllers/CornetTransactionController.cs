@@ -262,7 +262,7 @@ namespace CASInterfaceService.Pages.Controllers
                     HttpStatusCode _statusCode = _httpResponse2.StatusCode;
 
                     var _responseString = _httpResponse2.ToString();
-                    Console.WriteLine(DateTime.Now + " Got HTTP Response: " + _responseString);
+                    Console.WriteLine(DateTime.Now + " Got HTTP Response");//: " + _responseString);
                     var _responseContent2 = await _httpResponse2.Content.ReadAsStringAsync();
 
                     Console.Out.WriteLine(model);
