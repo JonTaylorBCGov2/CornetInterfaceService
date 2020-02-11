@@ -52,20 +52,29 @@ namespace CASInterfaceService.Pages.Controllers
             t.Wait();
             Console.WriteLine(DateTime.Now + " Sent data to Dynamics");
 
-            JObject tempJson = JObject.Parse(t.Result);
-            CornetDynamicsReply replyJson = new CornetDynamicsReply();
-            
-            if (t.IsCompletedSuccessfully == true)
+            if (t.Result.Contains("Cornet Notification created with id"))
             {
+                cornetregreply.ResponseCode = "200";
                 cornetregreply.ResponseMessage = "Success";
-                cornetregreply.ResponseCode = null;// t.Result;
                 Console.WriteLine(DateTime.Now + " Response Success");
             }
             else
             {
-                cornetregreply.ResponseMessage = "Failure";
-                cornetregreply.ResponseCode = t.Result;
-                Console.WriteLine(DateTime.Now + " Response Fail");
+                JObject tempJson = JObject.Parse(t.Result);
+                CornetDynamicsReply replyJson = new CornetDynamicsReply();
+
+                if (t.IsCompletedSuccessfully == true)
+                {
+                    cornetregreply.ResponseMessage = "Success";
+                    cornetregreply.ResponseCode = null;// t.Result;
+                    Console.WriteLine(DateTime.Now + " Response Success");
+                }
+                else
+                {
+                    cornetregreply.ResponseMessage = "Failure";
+                    cornetregreply.ResponseCode = t.Result;
+                    Console.WriteLine(DateTime.Now + " Response Fail");
+                }
             }
 
             // Responses as follows:
@@ -218,6 +227,7 @@ namespace CASInterfaceService.Pages.Controllers
 
                 // This will also set the content type of the request
                 var content = new FormUrlEncodedContent(pairs);
+                Console.WriteLine(DateTime.Now + " content: " + content);
                 // send the request to the ADFS server
                 Console.WriteLine(DateTime.Now + " About to send request to ADFS");
                 var _httpResponse = stsClient.PostAsync(adfsOauth2Uri, content).GetAwaiter().GetResult();
@@ -267,7 +277,7 @@ namespace CASInterfaceService.Pages.Controllers
 
                     Console.Out.WriteLine(DateTime.Now + " model: " + model);
                     Console.Out.WriteLine(DateTime.Now + " responseString: " + _responseString);
-                    Console.Out.WriteLine(DateTime.Now + "  responseContent2: " + _responseContent2);
+                    Console.Out.WriteLine(DateTime.Now + " responseContent2: " + _responseContent2);
 
                     Console.WriteLine(DateTime.Now + " Exit GetDynamicsHttpClientNew");
                     return new Tuple<int, HttpResponseMessage, string>((int)_statusCode, _httpResponse2, _responseContent2);
