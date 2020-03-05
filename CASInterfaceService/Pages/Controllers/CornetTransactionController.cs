@@ -52,7 +52,7 @@ namespace CASInterfaceService.Pages.Controllers
             t.Wait();
             Console.WriteLine(DateTime.Now + " Sent data to Dynamics");
 
-            if (t.Result.Contains("Cornet Notification created with id"))
+            if (t.Result.Contains("Cornet Notification "))
             {
                 cornetregreply.ResponseCode = "200";
                 cornetregreply.ResponseMessage = "Success";
@@ -60,21 +60,21 @@ namespace CASInterfaceService.Pages.Controllers
             }
             else
             {
-                JObject tempJson = JObject.Parse(t.Result);
-                CornetDynamicsReply replyJson = new CornetDynamicsReply();
+                //JObject tempJson = JObject.Parse(t.Result);
+                //CornetDynamicsReply replyJson = new CornetDynamicsReply();
 
-                if (t.IsCompletedSuccessfully == true)
-                {
-                    cornetregreply.ResponseMessage = "Success";
-                    cornetregreply.ResponseCode = null;// t.Result;
-                    Console.WriteLine(DateTime.Now + " Response Success");
-                }
-                else
-                {
+                //if (t.IsCompletedSuccessfully == true)
+                //{
+                //    cornetregreply.ResponseMessage = "Success";
+                //    cornetregreply.ResponseCode = null;// t.Result;
+                //    Console.WriteLine(DateTime.Now + " Response Success");
+                //}
+                //else
+                //{
                     cornetregreply.ResponseMessage = "Failure";
                     cornetregreply.ResponseCode = t.Result;
                     Console.WriteLine(DateTime.Now + " Response Fail");
-                }
+                //}
             }
 
             // Responses as follows:
