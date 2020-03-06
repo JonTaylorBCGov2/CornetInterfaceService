@@ -121,7 +121,16 @@ namespace CASInterfaceService.Pages.Controllers
                     dynamic errorObject = new JObject();
                     errorObject.invoice_number = casAPQuery.invoiceNumber;
                     errorObject.invoice_status = "Not Found";
-                    errorObject.payment_status = "Not Found";
+                    if (e.Message.Contains("Unexpected character encountered while parsing value"))
+                    {
+                        // This is the message when the item is not found
+                        errorObject.payment_status = "Not found";
+                    }
+                    else
+                    {
+                        // We use this for credential problems or other things like that.
+                        errorObject.payment_status = e.Message;
+                    }
                     errorObject.payment_number = " ";
                     errorObject.payment_date = " ";
                     return errorObject;
