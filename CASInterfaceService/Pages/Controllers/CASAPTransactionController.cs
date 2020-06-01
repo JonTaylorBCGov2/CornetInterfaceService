@@ -105,7 +105,8 @@ namespace CASInterfaceService.Pages.Controllers
                     Console.WriteLine(DateTime.Now + " This was the result: " + packageResult.StatusCode);
                     //outputMessage = Convert.ToString(packageResult.StatusCode);
                     outputMessage = Convert.ToString(packageResult.Content.ReadAsStringAsync().Result);
-                    
+                    Console.WriteLine(DateTime.Now + " Output Message: " + outputMessage);
+
                     if (packageResult.StatusCode == HttpStatusCode.Unauthorized)
                     {
                         Console.WriteLine(DateTime.Now + " Ruh Roh, there was an error: " + packageResult.StatusCode);
