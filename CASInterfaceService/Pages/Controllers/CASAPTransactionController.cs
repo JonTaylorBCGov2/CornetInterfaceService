@@ -99,6 +99,7 @@ namespace CASInterfaceService.Pages.Controllers
                     var jsonString = JsonConvert.SerializeObject(casAPTransaction);
                     //HttpContent postContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
                     HttpContent postContent = new StringContent(jsonString);
+                    Console.WriteLine(DateTime.Now + " JSON: " + jsonString);
                     HttpResponseMessage packageResult = await packageClient.PostAsync(URL, postContent);
 
                     Console.WriteLine(DateTime.Now + " This was the result: " + packageResult.StatusCode);
