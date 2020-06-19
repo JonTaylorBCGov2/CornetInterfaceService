@@ -99,7 +99,7 @@
       "displayName": "Git Repo URL",
       "description": "The URL to your GIT repo.",
       "required": true,
-      "value": "https://github.com/JonTaylorBCGov/CASInterfaceService"
+      "value": "https://github.com/JonTaylorBCGov/CornetInterfaceService"
     },
     {
       "name": "GIT_REF",
@@ -141,7 +141,7 @@
       "displayName": "DotNet Startup Project",
       "description": "The path to the startup project for the .Net application.",
       "required": true,
-      "value": "CASInterfaceService/CASInterfaceService.csproj"
+      "value": "CornetInterfaceService/CornetInterfaceService.csproj"
     },
     {
       "name": "OUTPUT_IMAGE_TAG",

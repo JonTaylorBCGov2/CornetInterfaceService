@@ -225,14 +225,14 @@
       "displayName": "Name",
       "description": "The name assigned to all of the resources defined in this template.",
       "required": true,
-      "value": "cas-interface-service"
+      "value": "cornet-interface-service"
     },
     {
       "name": "SOURCE_IMAGE_NAME",
       "displayName": "Source Image Name",
       "description": "The name of the image to use for this resource.",
       "required": true,
-      "value": "cas-interface-service"
+      "value": "cornet-interface-service"
     },
     {
       "name": "IMAGE_NAMESPACE",
@@ -283,13 +283,13 @@
       "description": "The endpoint used for SiteMinder routed access to the application.",
       "displayName": "SiteMinder Application Domain",
       "name": "SITEMINDER_APPLICATION_DOMAIN",
-      "value": "cas-interface-service-dev.pathfinder.bcgov"
+      "value": "cornet-interface-service-dev.pathfinder.bcgov"
     },
     {
       "description": "The exposed hostname that will route to the service, e.g., myappname.pathfinder.gov.bc.ca, if left blank a value will be defaulted.",
       "displayName": "Application Domain",
       "name": "APPLICATION_DOMAIN",
-      "value": "cas-interface-service-dev.pathfinder.gov.bc.ca"
+      "value": "cornet-interface-service-dev.pathfinder.gov.bc.ca"
     },
     {
       "description": "Boolean that shows login, e.g., true, if left blank a value will be defaulted.",
@@ -317,7 +317,7 @@
       "displayName": "Secret resource name",
       "description": "Secret resource name",
       "required": true,
-      "value": "cas-interface-service"
+      "value": "cornet-interface-service"
     },
     {
       "name": "KEY_RING_STORAGE_NAME",
