@@ -1,6 +1,4 @@
-# CASInterfaceService
-This is a work in progress at this time.
+# CornetInterfaceService
 
-This will be an interface between the BC Government and CAS. It will take a json package and communicate the information with CAS. 
+This is an interface between Cornet and Dynamics. It's a clone of the CASInterfaceService where the prototype was developed, with the CAS interface specific code removed so that the only function remaining is Cornet related.
 
-More to come...
