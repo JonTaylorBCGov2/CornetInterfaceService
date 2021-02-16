@@ -7,6 +7,7 @@ namespace Gov.Cscp.VictimServices.Public.JsonObjects
         public Int64 EventId { get; set; }
         public string EventType { get; set; }
         public DateTimeOffset EventDate { get; set; }
+        public string OrgJSON { get; set; } // TODO: Remove for PROD
         public string DataElement1 { get; set; }
         public string DataValue1 { get; set; }
         public string DataElement2 { get; set; }
@@ -18,5 +19,3 @@ namespace Gov.Cscp.VictimServices.Public.JsonObjects
     }
 
 }
-
-
